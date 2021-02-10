@@ -24,11 +24,12 @@ Die Applikation "tactiCS:GO" richtet sich an E-Sport CS:GO Spieler, die mit ihre
 | **Marker** | Nutzer können temporäre Marker erstellen. | hoch | 0,5 Tag | View
 | **Laserpointer** | Nutzer können einen Laserpointer togglen, der dauerhaft ihre Mausposition an die anderen User überträgt. | nice-to-have | 1 Tag | View
 
+
 ## Umsetzung
 
 Bei der Umsetzung werden die Features in der Regel direkt Vollständig implementiert. Wir haben uns für folgende Reihenfolge bei der Implementierung entschieden, da hier wichtige Features zuerst implementiert werden, auf die andere Features im späteren Verlauf aufbauen. Außerdem wird hier die Priorität berücksichtigt. Das UI jedoch wird dabei parrallel zu den ersten Features entwickelt. 
 
-1.  Whiteboard, Websocket
+1.  Auf Whiteboard zeichnen, automatische Anmeldung im Default-Raum
 2.  Map (Hintergrund) anzeigen
 3.  Spieler-Marker und Bombe implementieren
 4.  Utilities (Smokes etc) implementieren
@@ -42,6 +43,21 @@ Bei der Umsetzung werden die Features in der Regel direkt Vollständig implement
 12. Chat
 13. Nutzerspezifischer Radiergummi
 14. Laserpointer
+
+<!-- Wie fängts an
+Wie läuft es ab
+Wie endet es
+
+Zeitliche Abläufe darstellen
+Mehrere Taktiken
+
+
+evtl. colyseus benutzen
+
+
+Abschluss durch Persistieren; Rückkehr zum Raum, exportieren als Bild?
+Zeitliche Ebene durch mehrere Tafeln in einem Raum? 
+-->
 
 <!---
 [Beschreiben Sie kurz das geplante Vorgehen bei der Umsetzung der Features. Entwerfen Sie dazu ein oder mehrere *Vertical Slices* anhand derer Sie den zentralen *Use Case* der Anwendung implementieren werden. Geben Sie an, wann welche Funktionen (und in welchem Vollständigkeitsgrad) implementiert werden. Begründen Sie kurz die gewählte Reihenfolge. ]

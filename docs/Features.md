@@ -12,7 +12,7 @@ Die Applikation "tactiCS:GO" richtet sich an E-Sport CS:GO Spieler, die mit ihre
 | **Auswählbare Map** | Die Nutzer können zwischen den Maps des Active-Duty-Map-Pools auswählen. | hoch | 1 Tag | View |
 | **Auf Map zeichnen** | Die Nutzer können auf der Map zeichnen. | kritisch | 4 Tage | View |
 | **Zeichenfarbe ändern** | Die Nutzer können die Farbe, mit der sie zeichnen, ändern. | hoch | 0,5 Tage | View |
-| **Rauchgranaten, Flashbangs, Decoys, Brandgranaten abbilden** | Die Nutzer können Nutzobjekte auf der Karte einfügen. | kritisch | 2 Tage | View |
+| **Rauchgranaten, Flashbangs, Decoys, Brandgranaten abbilden** | Die Nutzer können Nutzobjekte auf der Karte einfügen. Nutzer wählen ein Tool aus und können durch klicken auf die Karte die Objekte platzieren. Platzierte Objekte können einzeln gelöscht werden. | kritisch | 2 Tage | View |
 | **Chat** | Der Nutzer kann in einem Chatroom mit anderen Nutzern kommunizieren. | nice-to-have | 2 Tage | Server und Client |
 | **Spieler-Marker und Bombe als Drag-and-Drop** | Individuelle Spielerfiguren und die Bombe können auf die Map gedragged werden. | kritisch | 3 Tage | View |
 | **Togglebare Callouts** | Per toggle-Button kann der Nutzer Callouts ein- und ausblenden. | nice-to-have | 1 Tag | View |
@@ -21,10 +21,28 @@ Die Applikation "tactiCS:GO" richtet sich an E-Sport CS:GO Spieler, die mit ihre
 | **Private passwortgeschützte Lobbies/Räume** | Es können verschiedene Instanzen der Tafel erzeugt werden, damit mehrere Nutzergruppen/Teams das System gleichzeitig nutzen können. | hoch | 1 Tag | Server
 | **Radiergummi** | Nutzer können Gezeichnetes in einem Radius um den Cursor entfernen. | hoch | 1 Tag | View
 | **Nutzerspezifischer Radiergummi** | Nutzer können Gezeichnetes, was nur von sich selber stammt, in einem Radius um den Cursor entfernen. | nice-to-have | 1 Tag | View
+| **Marker** | Nutzer können temporäre Marker erstellen. | hoch | 0,5 Tag | View
+| **Laserpointer** | Nutzer können einen Laserpointer togglen, der dauerhaft ihre Mausposition an die anderen User überträgt. | nice-to-have | 1 Tag | View
 
 ## Umsetzung
 
-WebSockets, Canvas
+Bei der Umsetzung werden die Features in der Regel direkt Vollständig implementiert. Wir haben uns für folgende Reihenfolge bei der Implementierung entschieden, da hier wichtige Features zuerst implementiert werden, auf die andere Features im späteren Verlauf aufbauen. Außerdem wird hier die Priorität berücksichtigt. Das UI jedoch wird dabei parrallel zu den ersten Features entwickelt. 
+
+1.  Whiteboard, Websocket
+2.  Map (Hintergrund) anzeigen
+3.  Spieler-Marker und Bombe implementieren
+4.  Utilities (Smokes etc) implementieren
+5.  Reset Button(s)
+6.  auswählbare Maps
+7.  auswählbare Zeichenfarben
+8.  Radiergummi
+9.  Marker
+10. Private Räume
+11. togglebare Callouts
+12. Chat
+13. Nutzerspezifischer Radiergummi
+14. Laserpointer
+
 <!---
 [Beschreiben Sie kurz das geplante Vorgehen bei der Umsetzung der Features. Entwerfen Sie dazu ein oder mehrere *Vertical Slices* anhand derer Sie den zentralen *Use Case* der Anwendung implementieren werden. Geben Sie an, wann welche Funktionen (und in welchem Vollständigkeitsgrad) implementiert werden. Begründen Sie kurz die gewählte Reihenfolge. ]
 --->

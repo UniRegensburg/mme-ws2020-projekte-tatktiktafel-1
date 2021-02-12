@@ -19,16 +19,21 @@ Die Applikation "tactiCS:GO" richtet sich an E-Sport CS:GO Spieler, die mit ihre
 | **Reset-Button(s)** | Mit klicken eines Reset-Buttons können einzelne oder alle Arten von Markern o.ä. zurückgesetzt werden.  | kritisch | 1 Tag | View |
 | **Synchronisation der Tafel für mehrere Nutzer** | Der aktuelle Zustand der Tafel (im jeweiligen Raum) wird für alle verbundenen Nutzer synchronisiert, sodass alle Nutzer die gleiche Tafel sehen. Die aktuell verbundenen Nutzer werden aufgelistet. | kritisch | 2 Tage | Server und Client |
 | **Private passwortgeschützte Lobbies/Räume** | Es können verschiedene Instanzen der Tafel erzeugt werden, damit mehrere Nutzergruppen/Teams das System gleichzeitig nutzen können. | hoch | 1 Tag | Server
-| **Radiergummi** | Nutzer können Gezeichnetes in einem Radius um den Cursor entfernen. | hoch | 1 Tag | View
-| **Nutzerspezifischer Radiergummi** | Nutzer können Gezeichnetes, was nur von sich selber stammt, in einem Radius um den Cursor entfernen. | nice-to-have | 1 Tag | View
-| **Marker** | Nutzer können temporäre Marker erstellen. | hoch | 0,5 Tag | View
-| **Laserpointer** | Nutzer können einen Laserpointer togglen, der dauerhaft ihre Mausposition an die anderen User überträgt. | nice-to-have | 1 Tag | View
+| **Radiergummi** | Nutzer können Gezeichnetes in einem Radius um den Cursor entfernen. | hoch | 1 Tag | View |
+| **Nutzerspezifischer Radiergummi** | Nutzer können Gezeichnetes, was nur von sich selber stammt, in einem Radius um den Cursor entfernen. | nice-to-have | 1 Tag | View |
+| **Marker** | Nutzer können temporäre Marker erstellen. | hoch | 0,5 Tag | View |
+| **Laserpointer** | Nutzer können einen Laserpointer togglen, der dauerhaft ihre Mausposition an die anderen User überträgt. | hoch | 1 Tag | View |
+| **Taktik-Tabs** | Nutzer können verschiedene Taktiken auf unterschiedlichen Karten innerhalb eines Raumes erstellen. | nice-to-have | 2 Tage | View |
+| **Timeline** | Nutzer können in einer Timeline neue Timestemps erstellen, bei denen die Spieler- und Bombenposition von dem vorherigen Timestemp übernommen werden. | hoch | 2 Tage | View |
+| **Timestamps to Picture** | Nutzer können sich die Timestamps als Bild rendern und herunterladen. Entweder einzeln oder eine ganze Taktik auf einmal als ZIP/PDF (?) | nice-to-have | 1 Tag | View |
+| **Landingpage** | Beim Öffnen der Webseite landen die Nutzer auf einer Landingpage, auf der sie einen neuen Raum erstellen oder einem Raum über einen Key beitreten können. | hoch | 1 Tag | View |
+
 
 ## Umsetzung
 
 Bei der Umsetzung werden die Features in der Regel direkt Vollständig implementiert. Wir haben uns für folgende Reihenfolge bei der Implementierung entschieden, da hier wichtige Features zuerst implementiert werden, auf die andere Features im späteren Verlauf aufbauen. Außerdem wird hier die Priorität berücksichtigt. Das UI jedoch wird dabei parrallel zu den ersten Features entwickelt. 
 
-1.  Whiteboard, Websocket
+1.  Auf Whiteboard zeichnen, automatische Anmeldung im Default-Raum
 2.  Map (Hintergrund) anzeigen
 3.  Spieler-Marker und Bombe implementieren
 4.  Utilities (Smokes etc) implementieren
@@ -37,11 +42,34 @@ Bei der Umsetzung werden die Features in der Regel direkt Vollständig implement
 7.  auswählbare Zeichenfarben
 8.  Radiergummi
 9.  Marker
-10. Private Räume
-11. togglebare Callouts
-12. Chat
-13. Nutzerspezifischer Radiergummi
-14. Laserpointer
+10. Timeline
+11. Taktik-Tabs
+12. Private Räume/Landing Page
+13. togglebare Callouts
+14. Chat
+15. Nutzerspezifischer Radiergummi
+16. Laserpointer
+17. Timestamps to Picture
+
+
+## Beispielhafter Usecase
+
+Ein Spieler erzeugt über die Landingpage einen Raum und erhält einen Code/Link (wird angezeigt und/oder direkt in Zwischenablage kopiert), den er an seine Teammitglieder verteilen kann. Mitglieder eines Raumes können die dort zur Verfügung stehenden Tools nutzen, um auf einer ausgewählten CS:GO Karte Marker zu platzieren und sie zu annotieren, um ihre Taktik bildlich zu kommunizieren. Es können innerhalb eines Raumes mehrere Taktiken mit unterschiedlichen oder gleichen Karten erzeugt werden. Jede Taktik besteht aus einem oder mehreren Timestamps. Die Räume bleiben auch ohne dass jemand in diesem anwesend ist für einige Zeit (tbd) erhalten. Um ihre Taktiken über diese Zeit hinaus zu persistieren, können Nutzer diese als Bild rendern und herunterladen.
+
+<!-- Wie fängts an
+Wie läuft es ab
+Wie endet es
+
+Zeitliche Abläufe darstellen
+Mehrere Taktiken
+
+
+evtl. colyseus benutzen
+
+
+Abschluss durch Persistieren; Rückkehr zum Raum, exportieren als Bild?
+Zeitliche Ebene durch mehrere Tafeln in einem Raum? 
+-->
 
 <!---
 [Beschreiben Sie kurz das geplante Vorgehen bei der Umsetzung der Features. Entwerfen Sie dazu ein oder mehrere *Vertical Slices* anhand derer Sie den zentralen *Use Case* der Anwendung implementieren werden. Geben Sie an, wann welche Funktionen (und in welchem Vollständigkeitsgrad) implementiert werden. Begründen Sie kurz die gewählte Reihenfolge. ]

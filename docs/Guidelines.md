@@ -14,5 +14,5 @@
 
 ## Zusätzliche Übereinkünfte
 
-[Notieren Sie hier alle team-internen Übereinkünfte zur Verwendung des Repositorys, z.B. spezielle Überlegungen zur Codequalität oder zur Formulierung von *Commit Messages*]
-
+- 
+<!-- [Notieren Sie hier alle team-internen Übereinkünfte zur Verwendung des Repositorys, z.B. spezielle Überlegungen zur Codequalität oder zur Formulierung von *Commit Messages*] -->

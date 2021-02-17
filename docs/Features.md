@@ -74,3 +74,25 @@ Zeitliche Ebene durch mehrere Tafeln in einem Raum?
 <!---
 [Beschreiben Sie kurz das geplante Vorgehen bei der Umsetzung der Features. Entwerfen Sie dazu ein oder mehrere *Vertical Slices* anhand derer Sie den zentralen *Use Case* der Anwendung implementieren werden. Geben Sie an, wann welche Funktionen (und in welchem Vollständigkeitsgrad) implementiert werden. Begründen Sie kurz die gewählte Reihenfolge. ]
 --->
+
+<!---
+Sollte Karte interaktiv sein? Zoom etc. Scrolling / Verschieben
+In Feature Liste konkretisieren
+
+Bessere Begriffe: z.B. statt Timestamp Phase/Frame
+Begriff Playbooks
+
+Software Engineering:
+Eigenschaften von Usern, Räumen
+Userinterface
+- Map noch zentraler, App vielleicht als Fullscreen, randlos mit Icons über der Map
+Gesamtstruktur der Anwendung auf einem Whiteboard zusammenfassen
+https://en.wikipedia.org/wiki/Class-responsibility-collaboration_card
+
+Wie Anwendung strukturieren
+Wie funktioniert Colysseus
+Beide Seiten zusammenbringen
+Auf dieser Basis die Anwendung aufbauen
+
+Im Laufe der Woche machen und Herrn Bazo im Discord anpingen
+--->

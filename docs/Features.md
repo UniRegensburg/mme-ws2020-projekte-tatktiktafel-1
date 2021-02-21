@@ -10,7 +10,7 @@ Die Applikation "tactiCS:GO" richtet sich an E-Sport CS:GO Spieler, die mit ihre
 | Feature | Beschreibung | Priorität | Geschätzter Aufwand | Betroffene Schichten |
 |---------|--------------|-----------|--------------------|---------------------|
 | **Auswählbare Map** | Die Nutzer können zwischen den Maps des Active-Duty-Map-Pools auswählen. | hoch | 1 Tag | View |
-| **Auf Map zeichnen** | Die Nutzer können auf der Map zeichnen. | kritisch | 4 Tage | View |
+| **Interaktive Karte** | Die Nutzer können mit der o.g. Map interagieren: zoomen, Bild verschieben, zeichnen. | kritisch | 4 Tage | View |
 | **Zeichenfarbe ändern** | Die Nutzer können die Farbe, mit der sie zeichnen, ändern. | hoch | 0,5 Tage | View |
 | **Rauchgranaten, Flashbangs, Decoys, Brandgranaten abbilden** | Die Nutzer können Nutzobjekte auf der Karte einfügen. Nutzer wählen ein Tool aus und können durch klicken auf die Karte die Objekte platzieren. Platzierte Objekte können einzeln gelöscht werden. | kritisch | 2 Tage | View |
 | **Chat** | Der Nutzer kann in einem Chatroom mit anderen Nutzern kommunizieren. | nice-to-have | 2 Tage | Server und Client |

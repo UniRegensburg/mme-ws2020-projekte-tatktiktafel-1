@@ -1,13 +1,15 @@
 /* eslint-env browser */
 
 import Config from "/app/resources/js/Config.js";
+import maps from "/app/resources/image/maps/Maps.js";
 
 var canvas = document.getElementById("canvas"),
 	ctx = canvas.getContext("2d"),
 	pos = {
 		x: 0,
 		y: 0,
-	};
+	},
+	mapArray = Object.entries(maps);
 
 function setDrawPosition(event) {
 	pos.x = event.clientX - canvas.offsetLeft;
@@ -31,10 +33,50 @@ function draw(e) {
 	ctx.stroke(); // draw
 }
 
-function init() {
+function onMapDropDownChange(event) {
+	let selectedMapName = event.target.value;
+	changeMap(selectedMapName);
+}
+
+function changeMap(mapName) {
+	let mapPath, background, canvasMin;
+	mapArray.forEach(function(map) {
+		if (map[1].name === mapName) {
+			mapPath = map[1].imagePath;
+		}
+	});
+	mapPath = "/app/resources/image/maps/" + mapPath;
+	background = new Image();
+	background.src = mapPath; 
+	canvasMin = Math.min(canvas.width, canvas.height);
+	background.onload = function() {
+		ctx.drawImage(background,0,0,canvasMin,canvasMin);
+	};
+}
+
+// Setzt außerdem Default Map
+function initDropDown() {
+	let dropDownMenuMapSelect = document.getElementById("drop-down-map-select");
+	mapArray.forEach(function(map) {
+		let option = document.createElement("option");
+		option.innerHTML = map[1].name;
+
+		dropDownMenuMapSelect.appendChild(option);
+	});
+
+	changeMap(dropDownMenuMapSelect.value);
+	dropDownMenuMapSelect.addEventListener("change", onMapDropDownChange);
+}
+
+function initCanvas() {
 	canvas.addEventListener("mousemove", draw, false);
 	canvas.addEventListener("mousedown", setDrawPosition, false);
 	canvas.addEventListener("mouseenter", setDrawPosition, false);
+}
+
+function init() {
+	initCanvas();
+	initDropDown();
 }
 
 init();

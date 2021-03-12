@@ -20,7 +20,13 @@ h1 {
     color: #FAFAFA;
 }
 
-canvas {
+#canvas {
     border: 1px solid black;
-    margin-left: 20px;
+    margin: 20px;
+}
+
+#drop-down-map-select{
+    position: relative;
+    left: 20px;
+    top: -750px;
 }

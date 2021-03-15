@@ -2,6 +2,10 @@
 
 const AppServer = require("./server/AppServer.js");
 
+const colyseus = require("colyseus");
+const http = require("http");
+const port = process.env.port || 2567;
+
 var server;
 
 /**
@@ -13,6 +17,12 @@ function init() {
         appPort = process.argv[3]; // port to use for serving static files
     server = new AppServer(appDirectory);
     server.start(appPort);
+
+    const colyseusServer = new colyseus.Server({
+        server: http.createServer(server.app),
+    });
+    colyseusServer.listen(port);
+    console.log(`Colyseus Server Port: ${port}`);
 }
 
 init();

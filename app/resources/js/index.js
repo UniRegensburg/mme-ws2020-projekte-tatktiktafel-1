@@ -1,7 +1,8 @@
 /* eslint-env browser */
-
 import Config from "/app/resources/js/Config.js";
 import maps from "/app/resources/image/maps/Maps.js";
+
+import * as Colyseus from "/app/resources/js/lib/colyseus.js";
 
 var canvas = document.getElementById("canvas"),
 	ctx = canvas.getContext("2d"),
@@ -9,7 +10,8 @@ var canvas = document.getElementById("canvas"),
 		x: 0,
 		y: 0,
 	},
-	mapArray = Object.entries(maps);
+	mapArray = Object.entries(maps),
+	client;
 
 function setDrawPosition(event) {
 	pos.x = event.clientX - canvas.offsetLeft;
@@ -74,9 +76,17 @@ function initCanvas() {
 	canvas.addEventListener("mouseenter", setDrawPosition, false);
 }
 
+function initColyseusClient() {
+	console.log(Colyseus);
+	client = new Colyseus.Client("ws://localhost:2567");
+	console.log(client);
+}
+
 function init() {
 	initCanvas();
 	initDropDown();
+	initColyseusClient();
+
 }
 
 init();

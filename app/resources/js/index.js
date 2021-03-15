@@ -2,7 +2,7 @@
 import Config from "/app/resources/js/Config.js";
 import maps from "/app/resources/image/maps/Maps.js";
 
-import * as Colyseus from "/app/resources/js/lib/colyseus.js";
+import * as Colyseus from "/libs/colyseus.js/colyseus.js";
 
 var canvas = document.getElementById("canvas"),
 	ctx = canvas.getContext("2d"),

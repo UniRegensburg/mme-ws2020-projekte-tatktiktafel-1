@@ -19,7 +19,6 @@
     "author": "Alexander Bazo <alexander.bazo@ur.de>",
     "license": "MIT",
     "dependencies": {
-        "colyseus": "^0.14.9",
         "colyseus.js": "^0.14.4",
         "eslint": "^7.18.0",
         "express": "^4.17.1"

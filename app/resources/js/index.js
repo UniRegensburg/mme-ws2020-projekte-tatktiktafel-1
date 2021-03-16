@@ -1,9 +1,8 @@
 /* eslint-env browser */
-/* global Colyseus */
+
 import Config from "/app/resources/js/Config.js";
 import maps from "/app/resources/image/maps/Maps.js";
-
-// import * as Colyseus from "/libs/colyseus.js/colyseus.js";
+import Colyseus from "/app/resources/js/ColyseusProvider.js";
 
 var canvas = document.getElementById("canvas"),
 	ctx = canvas.getContext("2d"),

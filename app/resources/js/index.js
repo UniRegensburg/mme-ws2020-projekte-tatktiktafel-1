@@ -11,7 +11,7 @@ var canvas = document.getElementById("canvas"),
 		y: 0,
 	},
 	mapArray = Object.entries(maps),
-	client;
+	client, roomGlobal;
 
 function setDrawPosition(event) {
 	pos.x = event.clientX - canvas.offsetLeft;
@@ -74,19 +74,29 @@ function initCanvas() {
 	canvas.addEventListener("mousemove", draw, false);
 	canvas.addEventListener("mousedown", setDrawPosition, false);
 	canvas.addEventListener("mouseenter", setDrawPosition, false);
+	canvas.addEventListener("mouseup",function() {
+		roomGlobal.send("test",{});
+	}, false);
 }
 
 function initColyseusClient() {
-	console.log(Colyseus);
-	client = new Colyseus.Client("ws://localhost:2567");
-	console.log(client);
+	client = new Colyseus.Client("ws://localhost:2567"); // localhost muss durch entsprechende Server-IP ersetzt werden.
+
+	client.joinOrCreate("test").then(room => {
+		console.log(room.sessionId, "joined", room.name);
+		roomGlobal = room;
+		roomGlobal.onMessage("test", (message) => {
+			console.log(message.clientSessionId + " did something.");
+		});
+	}).catch(e => {
+		console.log("JOIN ERROR", e);
+	});
 }
 
 function init() {
+	initColyseusClient();
 	initCanvas();
 	initDropDown();
-	initColyseusClient();
-
 }
 
 init();

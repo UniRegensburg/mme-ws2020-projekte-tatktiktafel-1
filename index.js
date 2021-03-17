@@ -1,12 +1,15 @@
 /* eslint-env node */
 
+var server;
+
 const AppServer = require("./server/AppServer.js");
 
 const colyseus = require("colyseus");
 const http = require("http");
 const port = process.env.port || 2567;
 
-var server;
+const TestRoom = require("./server/TestRoom.js");
+// let testRoomClass = TestRoom.TestRoom;
 
 /**
  * Starts webserver to serve files from "/app" folder
@@ -23,6 +26,8 @@ function init() {
     });
     colyseusServer.listen(port);
     console.log(`Colyseus Server Port: ${port}`);
+
+    colyseusServer.define("test",TestRoom);
 }
 
 init();

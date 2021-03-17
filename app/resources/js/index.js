@@ -75,7 +75,7 @@ function initCanvas() {
 	canvas.addEventListener("mousedown", setDrawPosition, false);
 	canvas.addEventListener("mouseenter", setDrawPosition, false);
 	canvas.addEventListener("mouseup",function() {
-		roomGlobal.send("test",{});
+		roomGlobal.send("test", {timestamp: Date.now()});
 	}, false);
 }
 
@@ -85,8 +85,9 @@ function initColyseusClient() {
 	client.joinOrCreate("test").then(room => {
 		console.log(room.sessionId, "joined", room.name);
 		roomGlobal = room;
-		roomGlobal.onMessage("test", (message) => {
-			console.log(message.clientSessionId + " did something.");
+		roomGlobal.onStateChange((state) => {
+			console.log(new Date(state.lastChanged).toTimeString());
+			console.log("testEventSinceServerStart: " + state.testEventSinceServerStart);
 		});
 	}).catch(e => {
 		console.log("JOIN ERROR", e);

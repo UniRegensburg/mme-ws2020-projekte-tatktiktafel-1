@@ -2,15 +2,21 @@
 /* eslint-disable no-unused-vars */
 
 const colyseus = require("colyseus");
+const RoomState = require("./RoomState.js");
 
 module.exports = class TestRoom extends colyseus.Room {
 
   onCreate(options) {
     console.log("TestRoom.onCreate():");
-    // console.log(this);
-    this.onMessage("test", (client, message) => {
-      console.log(client.sessionId + " did something.");
-      this.broadcast("test", {clientSessionId: client.sessionId});
+    this.setState(new RoomState());
+    this.onMessage("test", (client,message) => {
+      if (this.state.testEventSinceServerStart) {
+        this.state.testEventSinceServerStart++;
+      } else {
+        this.state.testEventSinceServerStart = 1;
+      }
+      this.state.lastChanged = message.timestamp;
+
     });
   }
 

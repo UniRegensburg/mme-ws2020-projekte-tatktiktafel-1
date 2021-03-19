@@ -11,7 +11,7 @@ var canvas = document.getElementById("canvas"),
 		y: 0,
 	},
 	mapArray = Object.entries(maps),
-	client, roomGlobal;
+	client, roomGlobal, activeMap;
 
 function setDrawPosition(event) {
 	pos.x = event.clientX - canvas.offsetLeft;
@@ -37,10 +37,16 @@ function draw(e) {
 
 function onMapDropDownChange(event) {
 	let selectedMapName = event.target.value;
+	if (selectedMapName === activeMap) {
+		return;
+	}
 	changeMap(selectedMapName);
+	roomGlobal.send("mapchange", {activeMap: selectedMapName});
 }
 
 function changeMap(mapName) {
+	console.log("function: changeMap");
+	activeMap = mapName;
 	let mapPath, background, canvasMin;
 	mapArray.forEach(function(map) {
 		if (map[1].name === mapName) {
@@ -88,6 +94,10 @@ function initColyseusClient() {
 		roomGlobal.onStateChange((state) => {
 			console.log(new Date(state.lastChanged).toTimeString());
 			console.log("testEventSinceServerStart: " + state.testEventSinceServerStart);
+			if (state.activeMap !== activeMap) {
+				changeMap(state.activeMap);
+				document.getElementById("drop-down-map-select").value = state.activeMap;
+			}
 		});
 	}).catch(e => {
 		console.log("JOIN ERROR", e);

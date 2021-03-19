@@ -10,6 +10,7 @@ class RoomState extends Schema {
 schema.defineTypes(RoomState, {
   testEventSinceServerStart: "number",
   lastChanged: "number", // erwartet: Rückgabewert von Date.now()
+  activeMap: "string",
 });
 
 module.exports = RoomState;

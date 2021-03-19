@@ -9,7 +9,11 @@ module.exports = class TestRoom extends colyseus.Room {
   onCreate(options) {
     console.log("TestRoom.onCreate():");
     this.setState(new RoomState());
+
     this.state.activeMap = "Inferno"; // Hack, bitte noch eleganter lösen
+    this.state.testEventSinceServerStart = 0; // Hack, bitte noch eleganter lösen
+    this.state.lastChanged = Date.now();
+
     this.onMessage("test", (client,message) => {
       if (this.state.testEventSinceServerStart) {
         this.state.testEventSinceServerStart++;
@@ -21,6 +25,9 @@ module.exports = class TestRoom extends colyseus.Room {
     });
     this.onMessage("mapchange", (client,message) => {
       this.state.activeMap = message.activeMap;
+    });
+    this.onMessage("canvaschanged", (client,message) => {
+      this.state.canvasURI = message.canvasURI;
     });
   }
 

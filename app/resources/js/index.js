@@ -82,6 +82,7 @@ function initCanvas() {
 	canvas.addEventListener("mouseenter", setDrawPosition, false);
 	canvas.addEventListener("mouseup",function() {
 		roomGlobal.send("test", {timestamp: Date.now()});
+		roomGlobal.send("canvaschanged", {canvasURI: canvas.toDataURL()});
 	}, false);
 }
 
@@ -98,6 +99,12 @@ function initColyseusClient() {
 				changeMap(state.activeMap);
 				document.getElementById("drop-down-map-select").value = state.activeMap;
 			}
+			let img = new Image();
+			img.onload = function() {
+				ctx.drawImage(img,0,0); //,canvasMin,canvasMin);
+			};
+			console.log(state.canvasURI);
+			img.src = state.canvasURI;
 		});
 	}).catch(e => {
 		console.log("JOIN ERROR", e);

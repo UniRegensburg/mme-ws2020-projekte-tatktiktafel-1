@@ -11,6 +11,7 @@ schema.defineTypes(RoomState, {
   testEventSinceServerStart: "number",
   lastChanged: "number", // erwartet: Rückgabewert von Date.now()
   activeMap: "string",
+  canvasURI: "string",
 });
 
 module.exports = RoomState;

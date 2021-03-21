@@ -5,7 +5,9 @@ import maps from "/app/resources/image/maps/Maps.js";
 import Colyseus from "/app/resources/js/ColyseusProvider.js";
 
 var canvas = document.getElementById("canvas"),
+	backgroundcanvas = document.getElementById("backgroundcanvas"),
 	ctx = canvas.getContext("2d"),
+	backgroundctx = backgroundcanvas.getContext("2d"),
 	pos = {
 		x: 0,
 		y: 0,
@@ -15,7 +17,7 @@ var canvas = document.getElementById("canvas"),
 
 function setDrawPosition(event) {
 	pos.x = event.clientX - canvas.offsetLeft;
-	pos.y = event.clientY - canvas.offsetTop;
+	pos.y = event.clientY - canvas.offsetTop - 90;
 }
 
 function draw(e) {
@@ -58,7 +60,7 @@ function changeMap(mapName) {
 	background.src = mapPath; 
 	canvasMin = Math.min(canvas.width, canvas.height);
 	background.onload = function() {
-		ctx.drawImage(background,0,0,canvasMin,canvasMin);
+		backgroundctx.drawImage(background,0,0,canvasMin,canvasMin);
 	};
 }
 
@@ -74,6 +76,17 @@ function initDropDown() {
 
 	changeMap(dropDownMenuMapSelect.value);
 	dropDownMenuMapSelect.addEventListener("change", onMapDropDownChange);
+}
+
+function initClearCanvasButton(){
+	let clearCanvasButton = document.getElementById("clear-canvas-button");
+	clearCanvasButton.addEventListener("click",clearCanvas,false);
+}
+
+function clearCanvas(){
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	roomGlobal.send("canvaschanged", {canvasURI: canvas.toDataURL()});
+	console.log("clear Canvas");
 }
 
 function initCanvas() {
@@ -115,6 +128,7 @@ function init() {
 	initColyseusClient();
 	initCanvas();
 	initDropDown();
+	initClearCanvasButton();
 }
 
 init();

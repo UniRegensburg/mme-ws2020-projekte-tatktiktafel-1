@@ -30,3 +30,41 @@ h1 {
     left: 20px;
     top: -750px;
 }
+
+#chat-wrapper {
+    margin:0 auto;
+    padding-bottom:25px;
+    background: white;
+    width:504px;
+    border:1px solid black;
+    float: right;
+}
+
+#chat-box {
+    text-align:left;
+    margin:0 auto;
+    margin-bottom:25px;
+    padding:10px;
+    background: white;
+    height:270px;
+    width:430px;
+    border:1px solid black;
+    overflow:auto;
+}
+
+#chat-message {
+    width: 100%;
+    align-items: center;
+    padding-left:10px;
+    padding-right:10px;
+}
+
+#chat-message-text {
+    margin: 0 auto;
+    width: 79%;
+}
+
+#chat-message-button {
+    margin: 0 auto;
+    width: 14%
+}

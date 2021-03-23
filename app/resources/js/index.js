@@ -111,10 +111,45 @@ function initColyseusClient() {
 	});
 }
 
+function initChat() {
+	let chatHistory = document.getElementById("chat-box"),
+		chatUserInput = document.getElementById("chat-message-text"),
+		chatEnterButton = document.getElementById("chat-message-button");
+	roomGlobal.onMessage("chat", (message) => {
+		let paragraphElement = document.createElement("p");
+		paragraphElement.innerHTML = `<b>${message.client.sessionId}:</b> ${message.message.message}`;
+		chatHistory.appendChild(paragraphElement);
+	});
+	function onMessageEntered() {
+		roomGlobal.send("chat", { message: chatUserInput.value});
+		chatUserInput.value = "";		
+	}
+	chatEnterButton.addEventListener("click", function() {
+		onMessageEntered();
+	});
+	chatUserInput.addEventListener("keydown", function(event) {
+		if (event.code === "Enter") {
+			event.preventDefault();
+			onMessageEntered();
+		}
+	});
+}
+
+// Hack, sollte wohl mit await o.ä. gelöst werden
+function awaitClientInit() {
+	if (roomGlobal !== undefined) {
+		initCanvas();
+		initDropDown();
+		initChat();
+		return;
+	}
+	setTimeout(awaitClientInit,1000);
+}
+
 function init() {
 	initColyseusClient();
-	initCanvas();
-	initDropDown();
+
+	awaitClientInit();
 }
 
 init();

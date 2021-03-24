@@ -10,9 +10,18 @@
 </head>
 
 <body>
-    <h1>tactiCS:GO</h1>
-    <canvas id="canvas" class="canvas" width="750vw" height="750vh"></canvas>
-    <select id="drop-down-map-select"></select>
+    <div class="h1-div">
+        <h1>tactiCS:GO</h1>
+    </div>
+    <div class="canvas-div" style="position: relative">
+        <canvas id="canvas" class="canvas" width="750vw" height="750vh"></canvas>
+        <canvas id="backgroundcanvas" width="750vw" height="750vh"></canvas>
+    </div>
+    <div class="menu-div" style="position: relative">
+        <select id="drop-down-map-select"></select>
+        <button id="clear-canvas-button">CLEAR</button>
+        <input type="checkbox" name="Erase" id="erase-checkbox">
+    </div>
     <div id="outerContainer">
         <div id="containerGrenades" class="container">
             <img src="/app/resources/image/grenades/HE-Grenade.png" alt="HE-Grenade" id="hegrenade" class="grenades">
@@ -38,7 +47,6 @@
         <div id="containerBomb" class="container">
             <img src="/app/resources/image/marker/Bomb.jpg" alt="Bomb" id="bomb" class="draggable">
         </div>
-    </div>
     <script type="module" src="resources/js/index.js"></script>
     <script src="/libs/colyseus.js/colyseus.js"></script>
 </body>

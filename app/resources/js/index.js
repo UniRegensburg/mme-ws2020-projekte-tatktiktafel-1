@@ -6,7 +6,10 @@ import Colyseus from "/app/resources/js/ColyseusProvider.js";
 //import initDraggables from "/app/recources/js/draggables.js";
 
 var canvas = document.getElementById("canvas"),
+	backgroundcanvas = document.getElementById("backgroundcanvas"),
 	ctx = canvas.getContext("2d"),
+	backgroundctx = backgroundcanvas.getContext("2d"),
+	eraserCheckbox = document.getElementById("erase-checkbox"),
 	pos = {
 		x: 0,
 		y: 0,
@@ -16,18 +19,40 @@ var canvas = document.getElementById("canvas"),
 
 function setDrawPosition(event) {
 	pos.x = event.clientX - canvas.offsetLeft;
-	pos.y = event.clientY - canvas.offsetTop;
+	pos.y = event.clientY - canvas.offsetTop - 90;
 }
 
 function draw(e) {
 	if (e.buttons !== 1) { //button 1 = linke maustaste, muss gedrückt sein
 		return;
 	}
-	ctx.beginPath(); // begin
 
+/* Abfrage, ob eraser checkbox aktiviert ist.*/
+	if(eraserCheckbox.checked === true){
+		erase(e);
+	}
+	else{
+	ctx.beginPath(); // begin
+	
+	ctx.globalCompositeOperation = "source-over"; // art, wie über andere sachen übermalt werden sollen
 	ctx.lineWidth = Config.DRAW_DEFAULT_LINE_WIDTH;
 	ctx.lineCap = Config.DRAW_DEFAULT_LINE_CAP;
 	ctx.strokeStyle = Config.DRAW_DEFAULT_COLOR;
+
+	ctx.moveTo(pos.x, pos.y); // from
+	setDrawPosition(e);
+	ctx.lineTo(pos.x, pos.y); // to
+
+	ctx.stroke(); // draw
+	}
+}
+
+/* Erase funktion. */
+function erase(e){
+	ctx.beginPath(); // begin
+
+	ctx.lineWidth = Config.DRAW_DEFAULT_ERASER_WIDTH;
+	ctx.globalCompositeOperation = "destination-out";
 
 	ctx.moveTo(pos.x, pos.y); // from
 	setDrawPosition(e);
@@ -59,7 +84,7 @@ function changeMap(mapName) {
 	background.src = mapPath; 
 	canvasMin = Math.min(canvas.width, canvas.height);
 	background.onload = function() {
-		ctx.drawImage(background,0,0,canvasMin,canvasMin);
+		backgroundctx.drawImage(background,0,0,canvasMin,canvasMin);
 	};
 }
 
@@ -77,11 +102,23 @@ function initDropDown() {
 	dropDownMenuMapSelect.addEventListener("change", onMapDropDownChange);
 }
 
+function initClearCanvasButton(){
+	let clearCanvasButton = document.getElementById("clear-canvas-button");
+	clearCanvasButton.addEventListener("click",clearCanvas,false);
+}
+
+function clearCanvas(){
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	roomGlobal.send("canvaschanged", {canvasURI: canvas.toDataURL()});
+	console.log("clear Canvas");
+}
+
 function initCanvas() {
 	canvas.addEventListener("mousemove", draw, false);
 	canvas.addEventListener("mousedown", setDrawPosition, false);
 	canvas.addEventListener("mouseenter", setDrawPosition, false);
 	canvas.addEventListener("mouseup",function() {
+		ctx.globalCompositeOperation = "source-over";
 		roomGlobal.send("test", {timestamp: Date.now()});
 		roomGlobal.send("canvaschanged", {canvasURI: canvas.toDataURL()});
 	}, false);
@@ -219,6 +256,7 @@ function init() {
 	initDropDown();
 	initDraggables();
 	initGrenades();
+	initClearCanvasButton();
 }
 
 init();

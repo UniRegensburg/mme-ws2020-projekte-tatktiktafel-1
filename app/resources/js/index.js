@@ -3,9 +3,13 @@
 import Config from "/app/resources/js/Config.js";
 import maps from "/app/resources/image/maps/Maps.js";
 import Colyseus from "/app/resources/js/ColyseusProvider.js";
+//import initDraggables from "/app/recources/js/draggables.js";
 
 var canvas = document.getElementById("canvas"),
+	backgroundcanvas = document.getElementById("backgroundcanvas"),
 	ctx = canvas.getContext("2d"),
+	backgroundctx = backgroundcanvas.getContext("2d"),
+	eraserCheckbox = document.getElementById("erase-checkbox"),
 
 	pos = {
 		x: 0,
@@ -16,7 +20,7 @@ var canvas = document.getElementById("canvas"),
 
 function setDrawPosition(event) {
 	pos.x = event.clientX - canvas.offsetLeft;
-	pos.y = event.clientY - canvas.offsetTop;
+	pos.y = event.clientY - canvas.offsetTop - 90;
 }
 
 function draw(e) {
@@ -24,10 +28,31 @@ function draw(e) {
 		return;
 	}
 
+/* Abfrage, ob eraser checkbox aktiviert ist.*/
+	if(eraserCheckbox.checked === true){
+		erase(e);
+	}
+	else{
 	ctx.beginPath(); // begin
-
+	
+	ctx.globalCompositeOperation = "source-over"; // art, wie über andere sachen übermalt werden sollen
 	ctx.lineWidth = Config.DRAW_DEFAULT_LINE_WIDTH;
 	ctx.lineCap = Config.DRAW_DEFAULT_LINE_CAP;
+
+	ctx.moveTo(pos.x, pos.y); // from
+	setDrawPosition(e);
+	ctx.lineTo(pos.x, pos.y); // to
+
+	ctx.stroke(); // draw
+	}
+}
+
+/* Erase funktion. */
+function erase(e){
+	ctx.beginPath(); // begin
+
+	ctx.lineWidth = Config.DRAW_DEFAULT_ERASER_WIDTH;
+	ctx.globalCompositeOperation = "destination-out";
 
 	ctx.moveTo(pos.x, pos.y); // from
 	setDrawPosition(e);
@@ -67,7 +92,7 @@ function changeMap(mapName) {
 	background.src = mapPath; 
 	canvasMin = Math.min(canvas.width, canvas.height);
 	background.onload = function() {
-		ctx.drawImage(background,0,0,canvasMin,canvasMin);
+		backgroundctx.drawImage(background,0,0,canvasMin,canvasMin);
 	};
 }
 
@@ -87,11 +112,23 @@ function initDropDown() {
 	dropDownMenuColorSelect.addEventListener("change", onColorDropDownChange);
 }
 
+function initClearCanvasButton(){
+	let clearCanvasButton = document.getElementById("clear-canvas-button");
+	clearCanvasButton.addEventListener("click",clearCanvas,false);
+}
+
+function clearCanvas(){
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	roomGlobal.send("canvaschanged", {canvasURI: canvas.toDataURL()});
+	console.log("clear Canvas");
+}
+
 function initCanvas() {
 	canvas.addEventListener("mousemove", draw, false);
 	canvas.addEventListener("mousedown", setDrawPosition, false);
 	canvas.addEventListener("mouseenter", setDrawPosition, false);
 	canvas.addEventListener("mouseup",function() {
+		ctx.globalCompositeOperation = "source-over";
 		roomGlobal.send("test", {timestamp: Date.now()});
 		roomGlobal.send("canvaschanged", {canvasURI: canvas.toDataURL()});
 	}, false);
@@ -122,11 +159,152 @@ function initColyseusClient() {
 	});
 }
 
+
+function initChat() {
+	let chatHistory = document.getElementById("chat-box"),
+		chatUserInput = document.getElementById("chat-message-text"),
+		chatEnterButton = document.getElementById("chat-message-button");
+	roomGlobal.onMessage("chat", (message) => {
+		let paragraphElement = document.createElement("p");
+		paragraphElement.innerHTML = `<b>${message.client.sessionId}:</b> ${message.message.message}`;
+		chatHistory.appendChild(paragraphElement);
+	});
+	function onMessageEntered() {
+		roomGlobal.send("chat", { message: chatUserInput.value});
+		chatUserInput.value = "";		
+	}
+	chatEnterButton.addEventListener("click", function() {
+		onMessageEntered();
+	});
+	chatUserInput.addEventListener("keydown", function(event) {
+		if (event.code === "Enter") {
+			event.preventDefault();
+			onMessageEntered();
+		}
+	});
+}
+
+// Hack, sollte wohl mit await o.ä. gelöst werden
+function awaitClientInit() {
+	if (roomGlobal !== undefined) {
+		initChat();
+		return;
+	}
+	setTimeout(awaitClientInit,1000);
+}
+
+
+
+//src: https://forum.kirupa.com/t/create-a-draggable-element-in-javascript/638149/5
+function initDraggables() {
+	//var container = document.querySelector(".container");
+	var containerT = document.getElementById("containerT");
+	var containerCT = document.getElementById("containerCT");
+	var containerBomb = document.getElementById("containerBomb");
+
+    var activeItem = null;
+	console.log(containerT);
+
+    var active = false;
+
+    containerT.addEventListener("mousedown", dragStart, false);
+    containerT.addEventListener("mouseup", dragEnd, false);
+    containerT.addEventListener("mousemove", drag, false);
+
+	containerCT.addEventListener("mousedown", dragStart, false);
+    containerCT.addEventListener("mouseup", dragEnd, false);
+    containerCT.addEventListener("mousemove", drag, false);
+
+	containerBomb.addEventListener("mousedown", dragStart, false);
+    containerBomb.addEventListener("mouseup", dragEnd, false);
+    containerBomb.addEventListener("mousemove", drag, false);
+
+    function dragStart(e) {
+
+    	if (e.target !== e.currentTarget) {
+			active = true;
+
+			// this is the item we are interacting with
+			activeItem = e.target;
+
+			if (activeItem !== null) {
+				if (!activeItem.xOffset) {
+					activeItem.xOffset = 0;
+				}
+
+				if (!activeItem.yOffset) {
+					activeItem.yOffset = 0;
+				}
+
+				activeItem.initialX = e.clientX - activeItem.xOffset;
+				activeItem.initialY = e.clientY - activeItem.yOffset;
+			}
+      	}
+    }
+
+    function dragEnd(e) {
+      if (activeItem !== null) {
+        activeItem.initialX = activeItem.currentX;
+        activeItem.initialY = activeItem.currentY;
+      }
+
+      active = false;
+      activeItem = null;
+    }
+
+    function drag(e) {
+      if (active) {
+		e.preventDefault();  
+
+		activeItem.currentX = e.clientX - activeItem.initialX;
+		activeItem.currentY = e.clientY - activeItem.initialY;
+
+        activeItem.xOffset = activeItem.currentX;
+        activeItem.yOffset = activeItem.currentY;
+
+        setTranslate(activeItem.currentX, activeItem.currentY, activeItem);
+      }
+    }
+
+    function setTranslate(xPos, yPos, el) {
+      el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+    }
+}
+
+function initGrenades() {
+	document.getElementById("hegrenade").onclick = function() {changeToHeGrenade()};
+	document.getElementById("decoy").onclick = function() {changeToDecoy()};
+	document.getElementById("flashbang").onclick = function() {changeToFlashbang()};
+	document.getElementById("incendiary").onclick = function() {changeToIncendiary()};
+	document.getElementById("smoke").onclick = function() {changeToSmoke()};
+
+	function changeToHeGrenade() {
+  		document.getElementsByClassName("canvas")[0].id = "canvasHeGrenade";
+	}
+	function changeToDecoy() {
+		document.getElementsByClassName("canvas")[0].id = "canvasDecoy";
+ 	}
+  	function changeToFlashbang() {
+		document.getElementsByClassName("canvas")[0].id = "canvasFlashbang";
+	}
+	function changeToIncendiary() {
+		document.getElementsByClassName("canvas")[0].id = "canvasIncendiary";
+	}
+	function changeToSmoke() {
+		document.getElementsByClassName("canvas")[0].id = "canvasSmoke";
+	}
+}
+
+
 function init() {
 	ctx.strokeStyle = Config.DRAW_DEFAULT_COLOR; //default color geschickter setzen
 	initColyseusClient();
 	initCanvas();
 	initDropDown();
+	initDraggables();
+	initGrenades();
+	initClearCanvasButton();
+  awaitClientInit();
 }
 
 init();

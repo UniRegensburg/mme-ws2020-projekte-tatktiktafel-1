@@ -29,6 +29,10 @@ module.exports = class TestRoom extends colyseus.Room {
     this.onMessage("canvaschanged", (client,message) => {
       this.state.canvasURI = message.canvasURI;
     });
+
+    this.onMessage("chat", (client,message) => {
+      this.broadcast("chat", {client: client, message: message});
+    });
   }
 
   onAuth(client, options, request) {

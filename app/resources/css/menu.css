@@ -1,0 +1,19 @@
+.menu-div{
+    position: static;
+    left: 80%;
+    top: 100px;
+    width: fit-content;
+    height: fit-content;
+}
+
+#drop-down-map-select{
+    position: relative;
+}
+
+#drop-down-color-select{
+    position: relative;
+}
+
+#clear-canvas-button{
+    position: relative;
+}

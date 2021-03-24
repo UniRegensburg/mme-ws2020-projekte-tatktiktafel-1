@@ -20,7 +20,7 @@ var canvas = document.getElementById("canvas"),
 
 function setDrawPosition(event) {
 	pos.x = event.clientX - canvas.offsetLeft;
-	pos.y = event.clientY - canvas.offsetTop - 90;
+	pos.y = event.clientY - canvas.offsetTop - 90; //magische zahl, um abstand nach oben zu reparieren
 }
 
 function draw(e) {
@@ -79,7 +79,7 @@ function onColorDropDownChange(event) {
 }
 
 function changeMap(mapName) {
-	console.log("function: changeMap");
+	// console.log("function: changeMap");
 	activeMap = mapName;
 	let mapPath, background, canvasMin;
 	mapArray.forEach(function(map) {
@@ -120,7 +120,7 @@ function initClearCanvasButton(){
 function clearCanvas(){
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	roomGlobal.send("canvaschanged", {canvasURI: canvas.toDataURL()});
-	console.log("clear Canvas");
+	console.log("clearCanvas");
 }
 
 function initCanvas() {
@@ -151,14 +151,13 @@ function initColyseusClient() {
 			img.onload = function() {
 				ctx.drawImage(img,0,0); //,canvasMin,canvasMin);
 			};
-			console.log(state.canvasURI);
+			// console.log(state.canvasURI);
 			img.src = state.canvasURI;
 		});
 	}).catch(e => {
 		console.log("JOIN ERROR", e);
 	});
 }
-
 
 function initChat() {
 	let chatHistory = document.getElementById("chat-box"),
@@ -193,19 +192,13 @@ function awaitClientInit() {
 	setTimeout(awaitClientInit,1000);
 }
 
-
-
 //src: https://forum.kirupa.com/t/create-a-draggable-element-in-javascript/638149/5
 function initDraggables() {
-	//var container = document.querySelector(".container");
-	var containerT = document.getElementById("containerT");
-	var containerCT = document.getElementById("containerCT");
-	var containerBomb = document.getElementById("containerBomb");
-
-    var activeItem = null;
-	console.log(containerT);
-
-    var active = false;
+	var containerT = document.getElementById("containerT"),
+		containerCT = document.getElementById("containerCT"),
+		containerBomb = document.getElementById("containerBomb"),
+        activeItem = null,
+		active = false;
 
     containerT.addEventListener("mousedown", dragStart, false);
     containerT.addEventListener("mouseup", dragEnd, false);
@@ -221,7 +214,7 @@ function initDraggables() {
 
     function dragStart(e) {
 
-    	if (e.target !== e.currentTarget) {
+		if (e.target !== e.currentTarget) {
 			active = true;
 
 			// this is the item we are interacting with
@@ -239,10 +232,10 @@ function initDraggables() {
 				activeItem.initialX = e.clientX - activeItem.xOffset;
 				activeItem.initialY = e.clientY - activeItem.yOffset;
 			}
-      	}
+		}
     }
 
-    function dragEnd(e) {
+    function dragEnd(e) { //eslint-disable-line no-unused-vars
       if (activeItem !== null) {
         activeItem.initialX = activeItem.currentX;
         activeItem.initialY = activeItem.currentY;
@@ -272,19 +265,19 @@ function initDraggables() {
 }
 
 function initGrenades() {
-	document.getElementById("hegrenade").onclick = function() {changeToHeGrenade()};
-	document.getElementById("decoy").onclick = function() {changeToDecoy()};
-	document.getElementById("flashbang").onclick = function() {changeToFlashbang()};
-	document.getElementById("incendiary").onclick = function() {changeToIncendiary()};
-	document.getElementById("smoke").onclick = function() {changeToSmoke()};
+	document.getElementById("hegrenade").onclick = function() {changeToHeGrenade();};
+	document.getElementById("decoy").onclick = function() {changeToDecoy();};
+	document.getElementById("flashbang").onclick = function() {changeToFlashbang();};
+	document.getElementById("incendiary").onclick = function() {changeToIncendiary();};
+	document.getElementById("smoke").onclick = function() {changeToSmoke();};
 
 	function changeToHeGrenade() {
-  		document.getElementsByClassName("canvas")[0].id = "canvasHeGrenade";
+		document.getElementsByClassName("canvas")[0].id = "canvasHeGrenade";
 	}
 	function changeToDecoy() {
 		document.getElementsByClassName("canvas")[0].id = "canvasDecoy";
- 	}
-  	function changeToFlashbang() {
+	}
+	function changeToFlashbang() {
 		document.getElementsByClassName("canvas")[0].id = "canvasFlashbang";
 	}
 	function changeToIncendiary() {
@@ -295,7 +288,6 @@ function initGrenades() {
 	}
 }
 
-
 function init() {
 	ctx.strokeStyle = Config.DRAW_DEFAULT_COLOR; //default color geschickter setzen
 	initColyseusClient();
@@ -304,7 +296,9 @@ function init() {
 	initDraggables();
 	initGrenades();
 	initClearCanvasButton();
-  awaitClientInit();
+	awaitClientInit();
+
+	// window.addEventListener("scroll",() => {window.scrollTo(0,0);});
 }
 
 init();

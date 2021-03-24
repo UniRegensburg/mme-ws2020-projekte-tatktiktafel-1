@@ -1,0 +1,15 @@
+.draggable {
+    touch-action: none;
+    user-select: none;
+    position: relative;
+    width: 5vw;
+    height: 5vw;
+}
+
+.draggable:active {
+    opacity: .75;
+}
+
+.draggable:hover {
+    cursor: grab;
+}

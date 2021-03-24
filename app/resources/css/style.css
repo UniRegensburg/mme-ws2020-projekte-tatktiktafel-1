@@ -1,149 +1,56 @@
+@import "./utilities.css";
+@import "./chat.css";
+@import "./draggable.css";
+@import "./menu.css";
+@import "./canvas.css";
+
 html {
     margin: 0;
 }
 
 body {
     margin: 0;
-    background: #FAFAFA;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+   /* background-image: url(/app/resources/image/maps/de_dust2_radar.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
     font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-    color: #000;
+    color: #000;*/
+    overflow-x: hidden;
+    /* overflow: hidden; */
 }
 
 h1 {
-    width: 98vw;
+    width: 10vw;
     margin: 0;
     padding: 1vw;
-    background-color: #333;
     color: #FAFAFA;
+    font-size: 3vh;
 }
 
 img {
-    user-drag: none;
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
     -webkit-user-drag: none;
     -ms-user-select: none;
-
-
-#drop-down-map-select{
-    position: relative;
-}
-
-#clear-canvas-button{
-    position: relative;
 }
 
 .h1-div{
     position: relative;
     height:90px; 
-}
-
-.canvas-div{
-    position: static;
-}
-
-.menu-div{
-    position: static;
-    left: 90%;
-    top: 100px;
     width: fit-content;
-    height: fit-content;
-}
-
-#canvas {
-    border: 1px solid black;
-    margin: 20px;
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 1;
-}
-
-#canvasDecoy {
-    border: 1px solid black;
-    margin: 20px;
-    cursor:url("/app/resources/image/grenades/Decoy.png"), auto;
-}
-
-#canvasFlashbang {
-    border: 1px solid black;
-    margin: 20px;
-    cursor:url("/app/resources/image/grenades/Flashbang.png"), auto;
-}
-
-#canvasHeGrenade {
-    border: 1px solid black;
-    margin: 20px;
-    cursor:url("/app/resources/image/grenades/HE-Grenade.png"), auto;
-}
-
-#canvasSmoke {
-    border: 1px solid black;
-    margin: 20px;
-    cursor:url("/app/resources/image/grenades/Smoke Grenade.png"), auto;
-}
-
-#canvasIncendiary {
-    border: 1px solid black;
-    margin: 20px;
-    cursor:url("/app/resources/image/grenades/Incendiary Grenade.png"), auto;
-}
-
-#drop-down-map-select{
-    position: relative;
-    left: 20px;
-    top: -750px;
-}
-
-#drop-down-color-select{
-    position: relative;
-    left: 20px;
-    top: -750px;
-}
-
-#chat-wrapper {
-    margin:0 auto;
-    padding-bottom:25px;
-    background: white;
-    width:504px;
-    border:1px solid black;
-    float: right;
-}
-
-#chat-box {
-    text-align:left;
-    margin:0 auto;
-    margin-bottom:25px;
-    padding:10px;
-    background: white;
-    height:270px;
-    width:430px;
-    border:1px solid black;
-    overflow:auto;
-}
-
-#chat-message {
-    width: 100%;
-    align-items: center;
-    padding-left:10px;
-    padding-right:10px;
-}
-
-#chat-message-text {
-    margin: 0 auto;
-    width: 79%;
-}
-
-#chat-message-button {
-    margin: 0 auto;
-    width: 14%
+    /*position fixed; */
 }
 
 #outerContainer {
+    position: relative;
+    top: 850px;
     background-color: palegoldenrod;
     border-radius: 10px;
-    width: 98vw;
+    width: 90vw;
 }
 
 .container {
@@ -156,44 +63,5 @@ img {
     background-color: #333;
     border-radius: 10px;
     display: inline-block;
-}
-
-.draggable {
-    touch-action: none;
-    user-select: none;
-    position: relative;
-    width: 5vw;
-    height: 5vw;
-}
-
-.draggable:active {
-    opacity: .75;
-}
-
-.draggable:hover {
-    cursor: grab;
-}
-
-.grenades {
-    position: relative;
-    width: 5vw;
-    height: 5vw;
-}
-
-.grenades:active {
-    opacity: .75;
-}
-
-.grenades:hover {
-    cursor: pointer;
-}
-
-#backgroundcanvas {
-    border: 1px solid black;
-    margin: 20px;
-    position: absolute;
-    left:0;
-    top: 0;
-    z-index: 0;
 }
 

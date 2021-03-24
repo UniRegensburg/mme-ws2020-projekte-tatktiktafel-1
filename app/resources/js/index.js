@@ -3,6 +3,7 @@
 import Config from "/app/resources/js/Config.js";
 import maps from "/app/resources/image/maps/Maps.js";
 import Colyseus from "/app/resources/js/ColyseusProvider.js";
+//import initDraggables from "/app/recources/js/draggables.js";
 
 var canvas = document.getElementById("canvas"),
 	backgroundcanvas = document.getElementById("backgroundcanvas"),
@@ -148,10 +149,113 @@ function initColyseusClient() {
 	});
 }
 
+//src: https://forum.kirupa.com/t/create-a-draggable-element-in-javascript/638149/5
+function initDraggables() {
+	//var container = document.querySelector(".container");
+	var containerT = document.getElementById("containerT");
+	var containerCT = document.getElementById("containerCT");
+	var containerBomb = document.getElementById("containerBomb");
+
+    var activeItem = null;
+	console.log(containerT);
+
+    var active = false;
+
+    containerT.addEventListener("mousedown", dragStart, false);
+    containerT.addEventListener("mouseup", dragEnd, false);
+    containerT.addEventListener("mousemove", drag, false);
+
+	containerCT.addEventListener("mousedown", dragStart, false);
+    containerCT.addEventListener("mouseup", dragEnd, false);
+    containerCT.addEventListener("mousemove", drag, false);
+
+	containerBomb.addEventListener("mousedown", dragStart, false);
+    containerBomb.addEventListener("mouseup", dragEnd, false);
+    containerBomb.addEventListener("mousemove", drag, false);
+
+    function dragStart(e) {
+
+    	if (e.target !== e.currentTarget) {
+			active = true;
+
+			// this is the item we are interacting with
+			activeItem = e.target;
+
+			if (activeItem !== null) {
+				if (!activeItem.xOffset) {
+					activeItem.xOffset = 0;
+				}
+
+				if (!activeItem.yOffset) {
+					activeItem.yOffset = 0;
+				}
+
+				activeItem.initialX = e.clientX - activeItem.xOffset;
+				activeItem.initialY = e.clientY - activeItem.yOffset;
+			}
+      	}
+    }
+
+    function dragEnd(e) {
+      if (activeItem !== null) {
+        activeItem.initialX = activeItem.currentX;
+        activeItem.initialY = activeItem.currentY;
+      }
+
+      active = false;
+      activeItem = null;
+    }
+
+    function drag(e) {
+      if (active) {
+		e.preventDefault();  
+
+		activeItem.currentX = e.clientX - activeItem.initialX;
+		activeItem.currentY = e.clientY - activeItem.initialY;
+
+        activeItem.xOffset = activeItem.currentX;
+        activeItem.yOffset = activeItem.currentY;
+
+        setTranslate(activeItem.currentX, activeItem.currentY, activeItem);
+      }
+    }
+
+    function setTranslate(xPos, yPos, el) {
+      el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+    }
+}
+
+function initGrenades() {
+	document.getElementById("hegrenade").onclick = function() {changeToHeGrenade()};
+	document.getElementById("decoy").onclick = function() {changeToDecoy()};
+	document.getElementById("flashbang").onclick = function() {changeToFlashbang()};
+	document.getElementById("incendiary").onclick = function() {changeToIncendiary()};
+	document.getElementById("smoke").onclick = function() {changeToSmoke()};
+
+	function changeToHeGrenade() {
+  		document.getElementsByClassName("canvas")[0].id = "canvasHeGrenade";
+	}
+	function changeToDecoy() {
+		document.getElementsByClassName("canvas")[0].id = "canvasDecoy";
+ 	}
+  	function changeToFlashbang() {
+		document.getElementsByClassName("canvas")[0].id = "canvasFlashbang";
+	}
+	function changeToIncendiary() {
+		document.getElementsByClassName("canvas")[0].id = "canvasIncendiary";
+	}
+	function changeToSmoke() {
+		document.getElementsByClassName("canvas")[0].id = "canvasSmoke";
+	}
+}
+
+
 function init() {
 	initColyseusClient();
 	initCanvas();
 	initDropDown();
+	initDraggables();
+	initGrenades();
 	initClearCanvasButton();
 }
 

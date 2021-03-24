@@ -6,6 +6,7 @@ import Colyseus from "/app/resources/js/ColyseusProvider.js";
 
 var canvas = document.getElementById("canvas"),
 	ctx = canvas.getContext("2d"),
+
 	pos = {
 		x: 0,
 		y: 0,
@@ -22,6 +23,7 @@ function draw(e) {
 	if (e.buttons !== 1) { //button 1 = linke maustaste, muss gedrückt sein
 		return;
 	}
+
 	ctx.beginPath(); // begin
 
 	ctx.lineWidth = Config.DRAW_DEFAULT_LINE_WIDTH;
@@ -121,7 +123,7 @@ function initColyseusClient() {
 }
 
 function init() {
-	ctx.strokeStyle = Config.DRAW_DEFAULT_COLOR;
+	ctx.strokeStyle = Config.DRAW_DEFAULT_COLOR; //default color geschickter setzen
 	initColyseusClient();
 	initCanvas();
 	initDropDown();

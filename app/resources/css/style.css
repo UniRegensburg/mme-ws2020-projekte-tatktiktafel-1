@@ -96,6 +96,12 @@ img {
     top: -750px;
 }
 
+#drop-down-color-select{
+    position: relative;
+    left: 20px;
+    top: -750px;
+}
+
 #chat-wrapper {
     margin:0 auto;
     padding-bottom:25px;

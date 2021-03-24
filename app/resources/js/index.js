@@ -10,6 +10,7 @@ var canvas = document.getElementById("canvas"),
 	ctx = canvas.getContext("2d"),
 	backgroundctx = backgroundcanvas.getContext("2d"),
 	eraserCheckbox = document.getElementById("erase-checkbox"),
+
 	pos = {
 		x: 0,
 		y: 0,
@@ -37,7 +38,6 @@ function draw(e) {
 	ctx.globalCompositeOperation = "source-over"; // art, wie über andere sachen übermalt werden sollen
 	ctx.lineWidth = Config.DRAW_DEFAULT_LINE_WIDTH;
 	ctx.lineCap = Config.DRAW_DEFAULT_LINE_CAP;
-	ctx.strokeStyle = Config.DRAW_DEFAULT_COLOR;
 
 	ctx.moveTo(pos.x, pos.y); // from
 	setDrawPosition(e);
@@ -70,6 +70,14 @@ function onMapDropDownChange(event) {
 	roomGlobal.send("mapchange", {activeMap: selectedMapName});
 }
 
+function onColorDropDownChange(event) {
+	let selectedColor = event.target.value;
+	if (selectedColor === ctx.strokeStyle) {
+		return;
+	}
+	ctx.strokeStyle = selectedColor;
+}
+
 function changeMap(mapName) {
 	console.log("function: changeMap");
 	activeMap = mapName;
@@ -90,7 +98,8 @@ function changeMap(mapName) {
 
 // Setzt außerdem Default Map
 function initDropDown() {
-	let dropDownMenuMapSelect = document.getElementById("drop-down-map-select");
+	let dropDownMenuMapSelect = document.getElementById("drop-down-map-select"),
+	dropDownMenuColorSelect = document.getElementById("drop-down-color-select");
 	mapArray.forEach(function(map) {
 		let option = document.createElement("option");
 		option.innerHTML = map[1].name;
@@ -100,6 +109,7 @@ function initDropDown() {
 
 	changeMap(dropDownMenuMapSelect.value);
 	dropDownMenuMapSelect.addEventListener("change", onMapDropDownChange);
+	dropDownMenuColorSelect.addEventListener("change", onColorDropDownChange);
 }
 
 function initClearCanvasButton(){
@@ -287,6 +297,7 @@ function initGrenades() {
 
 
 function init() {
+	ctx.strokeStyle = Config.DRAW_DEFAULT_COLOR; //default color geschickter setzen
 	initColyseusClient();
 	initCanvas();
 	initDropDown();

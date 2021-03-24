@@ -14,15 +14,80 @@ h1 {
     margin: 0;
     padding: 1vw;
     background-color: #333;
-    border-style: solid;
-    border-width: 0 0 0.25vh 0;
-    border-color: #FFF;
     color: #FAFAFA;
+}
+
+img {
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    -ms-user-select: none;
+
+
+#drop-down-map-select{
+    position: relative;
+}
+
+#clear-canvas-button{
+    position: relative;
+}
+
+.h1-div{
+    position: relative;
+    height:90px; 
+}
+
+.canvas-div{
+    position: static;
+}
+
+.menu-div{
+    position: static;
+    left: 90%;
+    top: 100px;
+    width: fit-content;
+    height: fit-content;
 }
 
 #canvas {
     border: 1px solid black;
     margin: 20px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+}
+
+#canvasDecoy {
+    border: 1px solid black;
+    margin: 20px;
+    cursor:url("/app/resources/image/grenades/Decoy.png"), auto;
+}
+
+#canvasFlashbang {
+    border: 1px solid black;
+    margin: 20px;
+    cursor:url("/app/resources/image/grenades/Flashbang.png"), auto;
+}
+
+#canvasHeGrenade {
+    border: 1px solid black;
+    margin: 20px;
+    cursor:url("/app/resources/image/grenades/HE-Grenade.png"), auto;
+}
+
+#canvasSmoke {
+    border: 1px solid black;
+    margin: 20px;
+    cursor:url("/app/resources/image/grenades/Smoke Grenade.png"), auto;
+}
+
+#canvasIncendiary {
+    border: 1px solid black;
+    margin: 20px;
+    cursor:url("/app/resources/image/grenades/Incendiary Grenade.png"), auto;
 }
 
 #drop-down-map-select{
@@ -68,3 +133,61 @@ h1 {
     margin: 0 auto;
     width: 14%
 }
+
+#outerContainer {
+    background-color: palegoldenrod;
+    border-radius: 10px;
+    width: 98vw;
+}
+
+.container {
+    text-align: center;
+    margin: 0.5vw;
+    margin-left: 2vw;
+    padding: 0.5vw;
+    position: relative;
+    width: 32vw;
+    background-color: #333;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.draggable {
+    touch-action: none;
+    user-select: none;
+    position: relative;
+    width: 5vw;
+    height: 5vw;
+}
+
+.draggable:active {
+    opacity: .75;
+}
+
+.draggable:hover {
+    cursor: grab;
+}
+
+.grenades {
+    position: relative;
+    width: 5vw;
+    height: 5vw;
+}
+
+.grenades:active {
+    opacity: .75;
+}
+
+.grenades:hover {
+    cursor: pointer;
+}
+
+#backgroundcanvas {
+    border: 1px solid black;
+    margin: 20px;
+    position: absolute;
+    left:0;
+    top: 0;
+    z-index: 0;
+}
+

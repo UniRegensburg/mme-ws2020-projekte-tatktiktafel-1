@@ -20,13 +20,100 @@ h1 {
     color: #FAFAFA;
 }
 
+img {
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    -ms-user-select: none;
+}
+
 #canvas {
     border: 1px solid black;
     margin: 20px;
+}
+
+#canvasDecoy {
+    border: 1px solid black;
+    margin: 20px;
+    cursor:url("/app/resources/image/grenades/Decoy.png"), auto;
+}
+
+#canvasFlashbang {
+    border: 1px solid black;
+    margin: 20px;
+    cursor:url("/app/resources/image/grenades/Flashbang.png"), auto;
+}
+
+#canvasHeGrenade {
+    border: 1px solid black;
+    margin: 20px;
+    cursor:url("/app/resources/image/grenades/HE-Grenade.png"), auto;
+}
+
+#canvasSmoke {
+    border: 1px solid black;
+    margin: 20px;
+    cursor:url("/app/resources/image/grenades/Smoke Grenade.png"), auto;
+}
+
+#canvasIncendiary {
+    border: 1px solid black;
+    margin: 20px;
+    cursor:url("/app/resources/image/grenades/Incendiary Grenade.png"), auto;
 }
 
 #drop-down-map-select{
     position: relative;
     left: 20px;
     top: -750px;
+}
+
+#outerContainer {
+    background-color: palegoldenrod;
+    border-radius: 10px;
+    width: 98vw;
+}
+
+.container {
+    text-align: center;
+    margin: 0.5vw;
+    margin-left: 2vw;
+    padding: 0.5vw;
+    position: relative;
+    width: 32vw;
+    background-color: #333;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.draggable {
+    touch-action: none;
+    user-select: none;
+    position: relative;
+    width: 5vw;
+    height: 5vw;
+}
+
+.draggable:active {
+    opacity: .75;
+}
+
+.draggable:hover {
+    cursor: grab;
+}
+
+.grenades {
+    position: relative;
+    width: 5vw;
+    height: 5vw;
+}
+
+.grenades:active {
+    opacity: .75;
+}
+
+.grenades:hover {
+    cursor: pointer;
 }

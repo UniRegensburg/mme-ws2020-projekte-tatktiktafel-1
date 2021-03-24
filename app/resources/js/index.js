@@ -26,7 +26,6 @@ function draw(e) {
 
 	ctx.lineWidth = Config.DRAW_DEFAULT_LINE_WIDTH;
 	ctx.lineCap = Config.DRAW_DEFAULT_LINE_CAP;
-	ctx.strokeStyle = Config.DRAW_DEFAULT_COLOR;
 
 	ctx.moveTo(pos.x, pos.y); // from
 	setDrawPosition(e);
@@ -42,6 +41,14 @@ function onMapDropDownChange(event) {
 	}
 	changeMap(selectedMapName);
 	roomGlobal.send("mapchange", {activeMap: selectedMapName});
+}
+
+function onColorDropDownChange(event) {
+	let selectedColor = event.target.value;
+	if (selectedColor === ctx.strokeStyle) {
+		return;
+	}
+	ctx.strokeStyle = selectedColor;
 }
 
 function changeMap(mapName) {
@@ -64,7 +71,8 @@ function changeMap(mapName) {
 
 // Setzt außerdem Default Map
 function initDropDown() {
-	let dropDownMenuMapSelect = document.getElementById("drop-down-map-select");
+	let dropDownMenuMapSelect = document.getElementById("drop-down-map-select"),
+	dropDownMenuColorSelect = document.getElementById("drop-down-color-select");
 	mapArray.forEach(function(map) {
 		let option = document.createElement("option");
 		option.innerHTML = map[1].name;
@@ -74,6 +82,7 @@ function initDropDown() {
 
 	changeMap(dropDownMenuMapSelect.value);
 	dropDownMenuMapSelect.addEventListener("change", onMapDropDownChange);
+	dropDownMenuColorSelect.addEventListener("change", onColorDropDownChange);
 }
 
 function initCanvas() {
@@ -112,6 +121,7 @@ function initColyseusClient() {
 }
 
 function init() {
+	ctx.strokeStyle = Config.DRAW_DEFAULT_COLOR;
 	initColyseusClient();
 	initCanvas();
 	initDropDown();

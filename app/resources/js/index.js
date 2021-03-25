@@ -20,7 +20,7 @@ var canvas = document.getElementById("canvas"),
 
 function setDrawPosition(event) {
 	pos.x = event.clientX - canvas.offsetLeft;
-	pos.y = event.clientY - canvas.offsetTop - 90; //magische zahl, um abstand nach oben zu reparieren
+	pos.y = event.clientY - canvas.offsetTop; //magische zahl, um abstand nach oben zu reparieren
 }
 
 function draw(e) {
@@ -124,6 +124,14 @@ function clearCanvas(){
 }
 
 function initCanvas() {
+
+	//set canvas size 
+	var canvasSize = document.documentElement.clientHeight;
+	canvas.width = canvasSize;
+	canvas.height = canvasSize;
+	canvas.style.width = canvasSize;
+	canvas.style.height = canvasSize;
+
 	canvas.addEventListener("mousemove", draw, false);
 	canvas.addEventListener("mousedown", setDrawPosition, false);
 	canvas.addEventListener("mouseenter", setDrawPosition, false);

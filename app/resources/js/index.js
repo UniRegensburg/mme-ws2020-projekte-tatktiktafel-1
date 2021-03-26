@@ -218,16 +218,11 @@ function initColyseusClient() {
 				stateY = state.draggables[key].y, 
 				localX = draggablePositions[key].x,
 				localY = draggablePositions[key].y;
-				console.log(stateX,stateY,localX,localY);
+				// console.log(stateX,stateY,localX,localY);
 				if (stateX !== localX || stateY !== localY) {
-					if (stateX === undefined) { stateX = 0; }
-					if (stateY === undefined) { stateY = 0; }
 					document.getElementById(key).style.transform = `translate3d(${stateX}px, ${stateY}px, 0px)`;
 					draggablePositions[key].x = stateX;
 					draggablePositions[key].y = stateY;
-					console.log(key);
-					console.log("State x and y: " + stateX + " " + draggablePositions[key].x);
-					console.log("Local x and y: " + localX + " " + draggablePositions[key].y);
 				}
 
 			});
@@ -299,6 +294,10 @@ function initDraggables() {
 			activeItem = e.target;
 
 			if (activeItem !== null) {
+
+				activeItem.xOffset = draggablePositions[activeItem.id].x;
+				activeItem.yOffset = draggablePositions[activeItem.id].y;
+
 				if (!activeItem.xOffset) {
 					activeItem.xOffset = 0;
 				}

@@ -42,6 +42,20 @@ class Draggables extends Schema {
   }
 }
 
+schema.defineTypes(Draggables, {
+  t1: Draggable,
+  t2: Draggable,
+  t3: Draggable,
+  t4: Draggable,
+  t5: Draggable,
+  ct1: Draggable,
+  ct2: Draggable,
+  ct3: Draggable,
+  ct4: Draggable,
+  ct5: Draggable,
+  bomb: Draggable,
+});
+
 class RoomState extends Schema {
   constructor() {
     super();

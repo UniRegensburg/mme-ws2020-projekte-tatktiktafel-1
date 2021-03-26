@@ -15,11 +15,12 @@ var canvas = document.getElementById("canvas"),
 		y: 0,
 	},
 	mapArray = Object.entries(maps),
+	utilityIsSelected = false,
 	client, roomGlobal, activeMap;
 
 function setDrawPosition(event) {
 	pos.x = event.clientX - canvas.offsetLeft;
-	pos.y = event.clientY - canvas.offsetTop; //magische zahl, um abstand nach oben zu reparieren
+	pos.y = event.clientY - canvas.offsetTop;
 }
 
 function draw(e) {
@@ -31,19 +32,22 @@ function draw(e) {
 	if(eraserCheckbox.checked === true){
 		erase(e);
 	}
-	else{
+	else if(utilityIsSelected === true){
+		return;
+	}
+	
 	ctx.beginPath(); // begin
 	
-	ctx.globalCompositeOperation = "source-over"; // art, wie über andere sachen übermalt werden sollen
+	ctx.globalCompositeOperation = "source-over"; 
 	ctx.lineWidth = Config.DRAW_DEFAULT_LINE_WIDTH;
 	ctx.lineCap = Config.DRAW_DEFAULT_LINE_CAP;
+	ctx.strokeStyle = document.getElementById("drop-down-color-select").value;
 
 	ctx.moveTo(pos.x, pos.y); // from
-	setDrawPosition(e);
+	setDrawPosition(e); //set new position
 	ctx.lineTo(pos.x, pos.y); // to
-
 	ctx.stroke(); // draw
-	}
+	
 }
 
 /* Erase funktion. */
@@ -54,9 +58,8 @@ function erase(e){
 	ctx.globalCompositeOperation = "destination-out";
 
 	ctx.moveTo(pos.x, pos.y); // from
-	setDrawPosition(e);
+	setDrawPosition(e); //set new position
 	ctx.lineTo(pos.x, pos.y); // to
-
 	ctx.stroke(); // draw
 }
 
@@ -137,7 +140,7 @@ function initCanvas() {
 	canvas.addEventListener("mousedown", setDrawPosition, false);
 	canvas.addEventListener("mouseenter", setDrawPosition, false);
 	canvas.addEventListener("mouseup",function() {
-		ctx.globalCompositeOperation = "source-over";
+		// ctx.globalCompositeOperation = "source-over";
 		roomGlobal.send("test", {timestamp: Date.now()});
 		roomGlobal.send("canvaschanged", {canvasURI: canvas.toDataURL()});
 	}, false);
@@ -158,7 +161,9 @@ function initColyseusClient() {
 			}
 			let img = new Image();
 			img.onload = function() {
-				ctx.drawImage(img,0,0); //,canvasMin,canvasMin);
+				ctx.clearRect(0,0,canvas.width,canvas.height);
+				
+				ctx.drawImage(img,0,0);
 			};
 			// console.log(state.canvasURI);
 			img.src = state.canvasURI;
@@ -274,7 +279,7 @@ function initDraggables() {
 }
 
 function initGrenades() {
-	var hegrenade = document.getElementById("hegrenade"),
+	let hegrenade = document.getElementById("hegrenade"),
 	decoy = document.getElementById("decoy"),
 	flashbang = document.getElementById("flashbang"),
 	incendiary = document.getElementById("incendiary"),
@@ -291,8 +296,7 @@ function initGrenades() {
 	canvas.onclick = function() {placeGrenade();};
 
 	function resetPickedGrenades() {
-		var grenades = document.getElementsByClassName("grenades");
-		var i;
+		let grenades = document.getElementsByClassName("grenades"), i;
 		for (i = 0; i < grenades.length; i++) {
 			grenades[i].style.opacity = 1;
 			console.log(grenades[i]);
@@ -300,91 +304,100 @@ function initGrenades() {
 	}	
 
 	function changeToHeGrenade() {
-		if (chosenGrenade != "hegrenade") {
+		if (chosenGrenade !== "hegrenade") {
 			resetPickedGrenades();
 			canvas.id = "canvasHeGrenade";
 			chosenGrenade = "hegrenade";
 			hegrenade.style.opacity = 0.5;
+			utilityIsSelected = true;
 		} else {
 			canvas.id = "canvas";
 			chosenGrenade = null;
 			hegrenade.style.opacity = 1;
+			utilityIsSelected = false;
 		}
 	}
 	function changeToDecoy() {
-		if (chosenGrenade != "decoy") {
+		if (chosenGrenade !== "decoy") {
 			resetPickedGrenades();
 			canvas.id = "canvasDecoy";
 			chosenGrenade = "decoy";
 			decoy.style.opacity = 0.5;
+			utilityIsSelected = true;
 		} else {
 			canvas.id = "canvas";
 			chosenGrenade = null;
 			decoy.style.opacity = 1;
+			utilityIsSelected = false;
 		}
 	}
 	function changeToFlashbang() {
-		if (chosenGrenade != "flashbang") {
+		if (chosenGrenade !== "flashbang") {
 			resetPickedGrenades();
 			canvas.id = "canvasFlashbang";
 			chosenGrenade = "flashbang";
 			flashbang.style.opacity = 0.5;
+			utilityIsSelected = true;
 		} else {
 			canvas.id = "canvas";
 			chosenGrenade = null;
 			flashbang.style.opacity = 1;
+			utilityIsSelected = false;
 		}
 
 	}
 	function changeToIncendiary() {
-		if (chosenGrenade != "incendiary") {
+		if (chosenGrenade !== "incendiary") {
 			resetPickedGrenades();
 			canvas.id = "canvasIncendiary";
 			chosenGrenade = "incendiary";
 			incendiary.style.opacity = 0.5;
+			utilityIsSelected = true;
 		} else {
 			canvas.id = "canvas";
 			chosenGrenade = null;
 			incendiary.style.opacity = 1;
+			utilityIsSelected = false;
 		}
 	}
 	function changeToSmoke() {
-		if (chosenGrenade != "smoke") {
+		if (chosenGrenade !== "smoke") {
 			resetPickedGrenades();
 			canvas.id = "canvasSmoke";
 			chosenGrenade = "smoke";
 			smoke.style.opacity = 0.5;
+			utilityIsSelected = true;
 		} else {
 			canvas.id = "canvas";
 			chosenGrenade = null;
 			smoke.style.opacity = 1;
+			utilityIsSelected = false;
 		}
 	}
 	
 	function placeGrenade() {
-		var xPos = event.clientX - canvas.offsetLeft,
+		let xPos = event.clientX - canvas.offsetLeft,
 		yPos = event.clientY - canvas.offsetTop;
 
-		if (chosenGrenade == "hegrenade") {
+		if (chosenGrenade === "hegrenade") {
 			drawGrenade();
-		} else if (chosenGrenade == "decoy") {
+		} else if (chosenGrenade === "decoy") {
 			drawGrenade();
 			console.log("Decoy");
-		} else if (chosenGrenade == "flashbang") {
+		} else if (chosenGrenade === "flashbang") {
 			drawGrenade();
 			console.log("Flashbang");
-		} else if (chosenGrenade == "incendiary") {
+		} else if (chosenGrenade === "incendiary") {
 			drawGrenade();
 			console.log("Incendiary");
-		} else if (chosenGrenade == "smoke") {
+		} else if (chosenGrenade === "smoke") {
 			drawGrenade();
 			console.log("Smoke");
 		}
+		roomGlobal.send("canvaschanged",{canvasURI: canvas.toDataURL()});
 
 		function drawGrenade() {
-			var c = document.getElementsByClassName("canvas")[0];
-			var ctx = c.getContext("2d");
-			var newGrenade = document.getElementById(chosenGrenade);
+			let c = document.getElementsByClassName("canvas")[0], ctx = c.getContext("2d"), newGrenade = document.getElementById(chosenGrenade);
 			ctx.drawImage(newGrenade, xPos, yPos);
 		}
 

@@ -89,7 +89,8 @@ function changeMap(mapName) {
 	mapPathUrl = "url('/app/resources/image/maps/" + mapPath + "')";
 	console.log(mapPath + " -> " + mapPathUrl);
 	background.style.backgroundImage = mapPathUrl;
-	/*backgroundImg = new Image();
+	/* Alte Version; Neue Version muss verifiziert werden.
+	backgroundImg = new Image();
 	backgroundImg.src = mapPath; 
 	backgroundImg.onload = function() {
 		background.style.backgroundImage = mapPathUrl;

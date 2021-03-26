@@ -1,28 +1,3 @@
-.canvas-div{
-    position: fixed;
-    top: 0;
-    width: 100vh;
-    height: 100vh;
-    margin-top:0;
-    margin-right:auto;
-    margin-bottom:0;
-    margin-left:auto;
-}
-
 .canvas {
-    border: 1px solid black;
-    margin: 20px;
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 0;
-}
-
-#backgroundcanvas {
-    border: 1px solid black;
-    margin: 20px;
-    position: absolute;
-    left:0;
-    top: 0;
-    z-index: -1;
+    box-shadow: inset 0 0 0.5vh #0ee;
 }

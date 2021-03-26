@@ -304,8 +304,8 @@ function initGrenades() {
 	}
 	
 	function placeGrenade() {
-		var xPos = event.clientX,
-		yPos = event.clientY;
+		var xPos = event.clientX - canvas.offsetLeft,
+		yPos = event.clientY - canvas.offsetTop;
 
 		console.log(xPos);
 		console.log(yPos);
@@ -326,7 +326,6 @@ function initGrenades() {
 		}
 		function drawGrenade() {
 			var c = document.getElementsByClassName("canvas")[0];
-			console.log(c);
 			var ctx = c.getContext("2d");
 			var newGrenade = document.getElementById(chosenGrenade);
 			ctx.drawImage(newGrenade, xPos, yPos);

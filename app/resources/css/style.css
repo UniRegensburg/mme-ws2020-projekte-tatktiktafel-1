@@ -4,6 +4,7 @@
 @import "./draggable.css";
 @import "./chat.css";
 @import "./canvas.css";
+@import "./landingpage.css";
 
 html {
     margin: 0;
@@ -27,3 +28,4 @@ h1 {
     color: #FAFAFA;
     font-size: 3vh;
 }
+

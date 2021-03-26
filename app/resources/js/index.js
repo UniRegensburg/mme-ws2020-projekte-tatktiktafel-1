@@ -10,7 +10,7 @@ var canvas = document.getElementById("canvas"),
 	ctx = canvas.getContext("2d"),
 	eraserCheckbox = document.getElementById("erase-checkbox"),
 
-	pos = {
+	drawPos = {
 		x: 0,
 		y: 0,
 	},
@@ -19,8 +19,8 @@ var canvas = document.getElementById("canvas"),
 	client, roomGlobal, activeMap;
 
 function setDrawPosition(event) {
-	pos.x = event.clientX - canvas.offsetLeft;
-	pos.y = event.clientY - canvas.offsetTop;
+	drawPos.x = event.clientX - canvas.offsetLeft;
+	drawPos.y = event.clientY - canvas.offsetTop;
 }
 
 function draw(e) {
@@ -43,9 +43,9 @@ function draw(e) {
 	ctx.lineCap = Config.DRAW_DEFAULT_LINE_CAP;
 	ctx.strokeStyle = document.getElementById("drop-down-color-select").value;
 
-	ctx.moveTo(pos.x, pos.y); // from
+	ctx.moveTo(drawPos.x, drawPos.y); // from
 	setDrawPosition(e); //set new position
-	ctx.lineTo(pos.x, pos.y); // to
+	ctx.lineTo(drawPos.x, drawPos.y); // to
 	ctx.stroke(); // draw
 	
 }
@@ -57,9 +57,9 @@ function erase(e){
 	ctx.lineWidth = Config.DRAW_DEFAULT_ERASER_WIDTH;
 	ctx.globalCompositeOperation = "destination-out";
 
-	ctx.moveTo(pos.x, pos.y); // from
+	ctx.moveTo(drawPos.x, drawPos.y); // from
 	setDrawPosition(e); //set new position
-	ctx.lineTo(pos.x, pos.y); // to
+	ctx.lineTo(drawPos.x, drawPos.y); // to
 	ctx.stroke(); // draw
 }
 

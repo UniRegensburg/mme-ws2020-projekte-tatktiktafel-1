@@ -1,7 +1,8 @@
-@import "./utilities.css";
-@import "./chat.css";
-@import "./draggable.css";
+@import "./container.css";
 @import "./menu.css";
+@import "./utilities.css";
+@import "./draggable.css";
+@import "./chat.css";
 @import "./canvas.css";
 
 html {
@@ -12,14 +13,11 @@ body {
     margin: 0;
     width: 100vw;
     height: 100vh;
-    background-color: black;
-   /* background-image: url(/app/resources/image/maps/de_dust2_radar.jpg);
-    background-repeat: no-repeat;
-    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-    color: #000;*/
-    overflow-x: hidden;
-    /* overflow: hidden; */
+    background: black;
 }
 
 h1 {
@@ -29,39 +27,3 @@ h1 {
     color: #FAFAFA;
     font-size: 3vh;
 }
-
-img {
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -webkit-user-drag: none;
-    -ms-user-select: none;
-}
-
-.h1-div{
-    position: relative;
-    height:90px; 
-    width: fit-content;
-    /*position fixed; */
-}
-
-#outerContainer {
-    position: relative;
-    top: 850px;
-    background-color: palegoldenrod;
-    border-radius: 10px;
-    width: 90vw;
-}
-
-.container {
-    text-align: center;
-    margin: 0.5vw;
-    margin-left: 2vw;
-    padding: 0.5vw;
-    position: relative;
-    width: 32vw;
-    background-color: #333;
-    border-radius: 10px;
-    display: inline-block;
-}
-

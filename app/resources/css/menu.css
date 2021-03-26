@@ -1,7 +1,6 @@
 .menu-div{
-    position: static;
-    left: 80%;
-    top: 100px;
+    position: relative;
+    padding: 1vw;
     width: fit-content;
     height: fit-content;
 }

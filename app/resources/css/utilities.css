@@ -1,37 +1,30 @@
 #canvasDecoy {
-    border: 1px solid black;
-    margin: 20px;
     cursor:url("/app/resources/image/grenades/Decoy.png"), auto;
 }
 
 #canvasFlashbang {
-    border: 1px solid black;
-    margin: 20px;
     cursor:url("/app/resources/image/grenades/Flashbang.png"), auto;
 }
 
 #canvasHeGrenade {
-    border: 1px solid black;
-    margin: 20px;
     cursor:url("/app/resources/image/grenades/HE-Grenade.png"), auto;
 }
 
 #canvasSmoke {
-    border: 1px solid black;
-    margin: 20px;
     cursor:url("/app/resources/image/grenades/Smoke Grenade.png"), auto;
 }
 
 #canvasIncendiary {
-    border: 1px solid black;
-    margin: 20px;
     cursor:url("/app/resources/image/grenades/Incendiary Grenade.png"), auto;
 }
 
 .grenades {
     position: relative;
-    width: 5vw;
-    height: 5vw;
+    width: 5vh;
+    height: 5vh;
+    margin: 0.5vh;
+    box-shadow: inset 0 0 1.5vh 0.1vh rgba(250,250,250,0.1);
+    border-radius: 0.1vh;
 }
 
 .grenades:active {
@@ -40,4 +33,5 @@
 
 .grenades:hover {
     cursor: pointer;
+    background: rgba(255, 255, 255, 0.2);
 }

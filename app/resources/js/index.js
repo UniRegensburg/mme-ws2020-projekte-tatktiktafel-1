@@ -6,9 +6,8 @@ import Colyseus from "/app/resources/js/ColyseusProvider.js";
 //import initDraggables from "/app/recources/js/draggables.js";
 
 var canvas = document.getElementById("canvas"),
-	backgroundcanvas = document.getElementById("backgroundcanvas"),
+	background = document.getElementById("background"),
 	ctx = canvas.getContext("2d"),
-	backgroundctx = backgroundcanvas.getContext("2d"),
 	eraserCheckbox = document.getElementById("erase-checkbox"),
 
 	pos = {
@@ -20,7 +19,7 @@ var canvas = document.getElementById("canvas"),
 
 function setDrawPosition(event) {
 	pos.x = event.clientX - canvas.offsetLeft;
-	pos.y = event.clientY - canvas.offsetTop - 90; //magische zahl, um abstand nach oben zu reparieren
+	pos.y = event.clientY - canvas.offsetTop; //magische zahl, um abstand nach oben zu reparieren
 }
 
 function draw(e) {
@@ -81,19 +80,21 @@ function onColorDropDownChange(event) {
 function changeMap(mapName) {
 	// console.log("function: changeMap");
 	activeMap = mapName;
-	let mapPath, background, canvasMin;
+	let mapPath, /* backgroundImg, */ mapPathUrl;
 	mapArray.forEach(function(map) {
 		if (map[1].name === mapName) {
 			mapPath = map[1].imagePath;
 		}
 	});
-	mapPath = "/app/resources/image/maps/" + mapPath;
-	background = new Image();
-	background.src = mapPath; 
-	canvasMin = Math.min(canvas.width, canvas.height);
-	background.onload = function() {
-		backgroundctx.drawImage(background,0,0,canvasMin,canvasMin);
-	};
+	mapPathUrl = "url('/app/resources/image/maps/" + mapPath + "')";
+	console.log(mapPath + " -> " + mapPathUrl);
+	background.style.backgroundImage = mapPathUrl;
+	/* Alte Version; Neue Version muss verifiziert werden.
+	backgroundImg = new Image();
+	backgroundImg.src = mapPath; 
+	backgroundImg.onload = function() {
+		background.style.backgroundImage = mapPathUrl;
+	};*/
 }
 
 // Setzt außerdem Default Map
@@ -124,6 +125,14 @@ function clearCanvas(){
 }
 
 function initCanvas() {
+
+	//set canvas size 
+	var canvasSize = document.documentElement.clientHeight;
+	canvas.width = canvasSize;
+	canvas.height = canvasSize;
+	canvas.style.width = canvasSize;
+	canvas.style.height = canvasSize;
+
 	canvas.addEventListener("mousemove", draw, false);
 	canvas.addEventListener("mousedown", setDrawPosition, false);
 	canvas.addEventListener("mouseenter", setDrawPosition, false);

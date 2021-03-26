@@ -274,41 +274,97 @@ function initDraggables() {
 }
 
 function initGrenades() {
-	document.getElementById("hegrenade").onclick = function() {changeToHeGrenade();};
-	document.getElementById("decoy").onclick = function() {changeToDecoy();};
-	document.getElementById("flashbang").onclick = function() {changeToFlashbang();};
-	document.getElementById("incendiary").onclick = function() {changeToIncendiary();};
-	document.getElementById("smoke").onclick = function() {changeToSmoke();};
-	document.getElementsByClassName("canvas")[0].onclick = function() {placeGrenade();};
-	var chosenGrenade = null;
+	var hegrenade = document.getElementById("hegrenade"),
+	decoy = document.getElementById("decoy"),
+	flashbang = document.getElementById("flashbang"),
+	incendiary = document.getElementById("incendiary"),
+	smoke = document.getElementById("smoke"),
+	canvas = document.getElementsByClassName("canvas")[0],
+	chosenGrenade = null;
+
+	hegrenade.onclick = function() {changeToHeGrenade();};
+	decoy.onclick = function() {changeToDecoy();};
+	flashbang.onclick = function() {changeToFlashbang();};
+	incendiary.onclick = function() {changeToIncendiary();};
+	smoke.onclick = function() {changeToSmoke();};
+
+	canvas.onclick = function() {placeGrenade();};
+
+	function resetPickedGrenades() {
+		var grenades = document.getElementsByClassName("grenades");
+		var i;
+		for (i = 0; i < grenades.length; i++) {
+			grenades[i].style.opacity = 1;
+			console.log(grenades[i]);
+		}
+	}	
 
 	function changeToHeGrenade() {
-		document.getElementsByClassName("canvas")[0].id = "canvasHeGrenade";
-		chosenGrenade = "hegrenade";
+		if (chosenGrenade != "hegrenade") {
+			resetPickedGrenades();
+			canvas.id = "canvasHeGrenade";
+			chosenGrenade = "hegrenade";
+			hegrenade.style.opacity = 0.5;
+		} else {
+			canvas.id = "canvas";
+			chosenGrenade = null;
+			hegrenade.style.opacity = 1;
+		}
 	}
 	function changeToDecoy() {
-		document.getElementsByClassName("canvas")[0].id = "canvasDecoy";
-		chosenGrenade = "decoy";
+		if (chosenGrenade != "decoy") {
+			resetPickedGrenades();
+			canvas.id = "canvasDecoy";
+			chosenGrenade = "decoy";
+			decoy.style.opacity = 0.5;
+		} else {
+			canvas.id = "canvas";
+			chosenGrenade = null;
+			decoy.style.opacity = 1;
+		}
 	}
 	function changeToFlashbang() {
-		document.getElementsByClassName("canvas")[0].id = "canvasFlashbang";
-		chosenGrenade = "flashbang";
+		if (chosenGrenade != "flashbang") {
+			resetPickedGrenades();
+			canvas.id = "canvasFlashbang";
+			chosenGrenade = "flashbang";
+			flashbang.style.opacity = 0.5;
+		} else {
+			canvas.id = "canvas";
+			chosenGrenade = null;
+			flashbang.style.opacity = 1;
+		}
+
 	}
 	function changeToIncendiary() {
-		document.getElementsByClassName("canvas")[0].id = "canvasIncendiary";
-		chosenGrenade = "incendiary";
+		if (chosenGrenade != "incendiary") {
+			resetPickedGrenades();
+			canvas.id = "canvasIncendiary";
+			chosenGrenade = "incendiary";
+			incendiary.style.opacity = 0.5;
+		} else {
+			canvas.id = "canvas";
+			chosenGrenade = null;
+			incendiary.style.opacity = 1;
+		}
 	}
 	function changeToSmoke() {
-		document.getElementsByClassName("canvas")[0].id = "canvasSmoke";
-		chosenGrenade = "smoke";
+		if (chosenGrenade != "smoke") {
+			resetPickedGrenades();
+			canvas.id = "canvasSmoke";
+			chosenGrenade = "smoke";
+			smoke.style.opacity = 0.5;
+		} else {
+			canvas.id = "canvas";
+			chosenGrenade = null;
+			smoke.style.opacity = 1;
+		}
 	}
 	
 	function placeGrenade() {
 		var xPos = event.clientX - canvas.offsetLeft,
 		yPos = event.clientY - canvas.offsetTop;
 
-		console.log(xPos);
-		console.log(yPos);
 		if (chosenGrenade == "hegrenade") {
 			drawGrenade();
 		} else if (chosenGrenade == "decoy") {
@@ -324,6 +380,7 @@ function initGrenades() {
 			drawGrenade();
 			console.log("Smoke");
 		}
+
 		function drawGrenade() {
 			var c = document.getElementsByClassName("canvas")[0];
 			var ctx = c.getContext("2d");

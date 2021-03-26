@@ -319,8 +319,8 @@ function initGrenades() {
 			var c = document.getElementsByClassName("canvas")[0];
 			console.log(c);
 			var ctx = c.getContext("2d");
-			var newHeGrenade = document.getElementById(chosenGrenade);
-			ctx.drawImage(newHeGrenade, xPos, yPos);
+			var newGrenade = document.getElementById(chosenGrenade);
+			ctx.drawImage(newGrenade, xPos, yPos);
 		}
 
 	}

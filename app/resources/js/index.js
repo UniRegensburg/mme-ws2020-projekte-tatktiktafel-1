@@ -279,21 +279,59 @@ function initGrenades() {
 	document.getElementById("flashbang").onclick = function() {changeToFlashbang();};
 	document.getElementById("incendiary").onclick = function() {changeToIncendiary();};
 	document.getElementById("smoke").onclick = function() {changeToSmoke();};
+	document.getElementsByClassName("canvas")[0].onclick = function() {placeGrenade();};
+	var chosenGrenade = null;
 
 	function changeToHeGrenade() {
 		document.getElementsByClassName("canvas")[0].id = "canvasHeGrenade";
+		chosenGrenade = "hegrenade";
 	}
 	function changeToDecoy() {
 		document.getElementsByClassName("canvas")[0].id = "canvasDecoy";
+		chosenGrenade = "decoy";
 	}
 	function changeToFlashbang() {
 		document.getElementsByClassName("canvas")[0].id = "canvasFlashbang";
+		chosenGrenade = "flashbang";
 	}
 	function changeToIncendiary() {
 		document.getElementsByClassName("canvas")[0].id = "canvasIncendiary";
+		chosenGrenade = "incendiary";
 	}
 	function changeToSmoke() {
 		document.getElementsByClassName("canvas")[0].id = "canvasSmoke";
+		chosenGrenade = "smoke";
+	}
+	
+	function placeGrenade() {
+		var xPos = event.clientX,
+		yPos = event.clientY;
+
+		console.log(xPos);
+		console.log(yPos);
+		if (chosenGrenade == "hegrenade") {
+			drawGrenade();
+		} else if (chosenGrenade == "decoy") {
+			drawGrenade();
+			console.log("Decoy");
+		} else if (chosenGrenade == "flashbang") {
+			drawGrenade();
+			console.log("Flashbang");
+		} else if (chosenGrenade == "incendiary") {
+			drawGrenade();
+			console.log("Incendiary");
+		} else if (chosenGrenade == "smoke") {
+			drawGrenade();
+			console.log("Smoke");
+		}
+		function drawGrenade() {
+			var c = document.getElementsByClassName("canvas")[0];
+			console.log(c);
+			var ctx = c.getContext("2d");
+			var newGrenade = document.getElementById(chosenGrenade);
+			ctx.drawImage(newGrenade, xPos, yPos);
+		}
+
 	}
 }
 

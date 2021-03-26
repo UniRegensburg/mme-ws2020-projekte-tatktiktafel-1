@@ -24,43 +24,32 @@ function setDrawPosition(event) {
 }
 
 function draw(e) {
+	/* Abfrage, ob linke Maustaste gedrückt ist. */
 	if (e.buttons !== 1) { //button 1 = linke maustaste, muss gedrückt sein
 		return;
 	}
-
-/* Abfrage, ob eraser checkbox aktiviert ist.*/
-	if(eraserCheckbox.checked === true){
-		erase(e);
-	}
+	/* Abfrage, ob eine utility aktiviert ist. */
 	else if(utilityIsSelected === true){
-		return;
+	return;
 	}
-	
 	ctx.beginPath(); // begin
-	
+	/* Radieren */
+	if(eraserCheckbox.checked === true){
+		ctx.globalCompositeOperation = "destination-out";
+		ctx.lineWidth = Config.DRAW_DEFAULT_ERASER_WIDTH;
+	}
+	/* Zeichnen */
+	else{
 	ctx.globalCompositeOperation = "source-over"; 
 	ctx.lineWidth = Config.DRAW_DEFAULT_LINE_WIDTH;
 	ctx.lineCap = Config.DRAW_DEFAULT_LINE_CAP;
 	ctx.strokeStyle = document.getElementById("drop-down-color-select").value;
 
-	ctx.moveTo(pos.x, pos.y); // from
-	setDrawPosition(e); //set new position
-	ctx.lineTo(pos.x, pos.y); // to
-	ctx.stroke(); // draw
-	
-}
-
-/* Erase funktion. */
-function erase(e){
-	ctx.beginPath(); // begin
-
-	ctx.lineWidth = Config.DRAW_DEFAULT_ERASER_WIDTH;
-	ctx.globalCompositeOperation = "destination-out";
-
-	ctx.moveTo(pos.x, pos.y); // from
-	setDrawPosition(e); //set new position
-	ctx.lineTo(pos.x, pos.y); // to
-	ctx.stroke(); // draw
+	}
+	ctx.moveTo(pos.x, pos.y); // Startposition
+	setDrawPosition(e); //Neue Position wird festgelegt
+	ctx.lineTo(pos.x, pos.y); // Zielposition
+	ctx.stroke(); // Ausführen
 }
 
 function onMapDropDownChange(event) {

@@ -6,9 +6,8 @@ import Colyseus from "/app/resources/js/ColyseusProvider.js";
 //import initDraggables from "/app/recources/js/draggables.js";
 
 var canvas = document.getElementById("canvas"),
-	backgroundcanvas = document.getElementById("backgroundcanvas"),
+	background = document.getElementById("background"),
 	ctx = canvas.getContext("2d"),
-	backgroundctx = backgroundcanvas.getContext("2d"),
 	eraserCheckbox = document.getElementById("erase-checkbox"),
 
 	pos = {
@@ -81,19 +80,20 @@ function onColorDropDownChange(event) {
 function changeMap(mapName) {
 	// console.log("function: changeMap");
 	activeMap = mapName;
-	let mapPath, background, canvasMin;
+	let mapPath, /* backgroundImg, */ mapPathUrl;
 	mapArray.forEach(function(map) {
 		if (map[1].name === mapName) {
 			mapPath = map[1].imagePath;
 		}
 	});
-	mapPath = "/app/resources/image/maps/" + mapPath;
-	background = new Image();
-	background.src = mapPath; 
-	canvasMin = Math.min(canvas.width, canvas.height);
-	background.onload = function() {
-		backgroundctx.drawImage(background,0,0,canvasMin,canvasMin);
-	};
+	mapPathUrl = "url('/app/resources/image/maps/" + mapPath + "')";
+	console.log(mapPath + " -> " + mapPathUrl);
+	background.style.backgroundImage = mapPathUrl;
+	/*backgroundImg = new Image();
+	backgroundImg.src = mapPath; 
+	backgroundImg.onload = function() {
+		background.style.backgroundImage = mapPathUrl;
+	};*/
 }
 
 // Setzt außerdem Default Map

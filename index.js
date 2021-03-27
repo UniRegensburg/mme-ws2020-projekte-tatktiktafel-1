@@ -19,6 +19,9 @@ function init() {
     let appDirectory = process.argv[2], // folder with client files
         appPort = process.argv[3]; // port to use for serving static files
     server = new AppServer(appDirectory);
+    server.app.get("/app/:roomId", function (req, res) {
+        res.sendFile("index.html", {root: server.appDir});        
+    });
     server.start(appPort);
 
     const colyseusServer = new colyseus.Server({

@@ -44,7 +44,6 @@ function draw(e) {
 	ctx.lineWidth = Config.DRAW_DEFAULT_LINE_WIDTH;
 	ctx.lineCap = Config.DRAW_DEFAULT_LINE_CAP;
 	ctx.strokeStyle = document.getElementById("drop-down-color-select").value;
-
 	}
 	ctx.moveTo(pos.x, pos.y); // Startposition
 	setDrawPosition(e); //Neue Position wird festgelegt
@@ -129,7 +128,7 @@ function initCanvas() {
 	canvas.addEventListener("mousedown", setDrawPosition, false);
 	canvas.addEventListener("mouseenter", setDrawPosition, false);
 	canvas.addEventListener("mouseup",function() {
-		// ctx.globalCompositeOperation = "source-over";
+		ctx.globalCompositeOperation = "source-over";
 		roomGlobal.send("test", {timestamp: Date.now()});
 		roomGlobal.send("canvaschanged", {canvasURI: canvas.toDataURL()});
 	}, false);
@@ -137,10 +136,32 @@ function initCanvas() {
 
 function initColyseusClient() {
 	client = new Colyseus.Client("ws://localhost:2567"); // localhost muss durch entsprechende Server-IP ersetzt werden.
+	let roomID = window.location.pathname.split("/").pop(), matchingRoomFound = false;
+	client.getAvailableRooms("test").then(rooms => {
+		rooms.forEach((room) => {
+			if (roomID === room.roomId) {
+				matchingRoomFound = true;
+				client.joinById(roomID).then(room => {
+					console.log(room.sessionId, "joined", room.roomId);
+					roomGlobal = room;
+					initRoomStateListener();
+				}).catch(e => {
+					console.log("JOIN ERROR", e);
+				});
+			}
+		});
+		if (!matchingRoomFound) {
+			client.create("test", {roomID: roomID}).then(room => {
+				console.log(room.sessionId, "created", room.id);
+				roomGlobal = room;
+				initRoomStateListener();
+			}).catch(e => {
+				console.log("JOIN ERROR", e);
+			});
+		}		
+	});
 
-	client.joinOrCreate("test").then(room => {
-		console.log(room.sessionId, "joined", room.name);
-		roomGlobal = room;
+	function initRoomStateListener() {
 		roomGlobal.onStateChange((state) => {
 			console.log(new Date(state.lastChanged).toTimeString());
 			console.log("testEventSinceServerStart: " + state.testEventSinceServerStart);
@@ -157,9 +178,7 @@ function initColyseusClient() {
 			// console.log(state.canvasURI);
 			img.src = state.canvasURI;
 		});
-	}).catch(e => {
-		console.log("JOIN ERROR", e);
-	});
+	}
 }
 
 function initChat() {

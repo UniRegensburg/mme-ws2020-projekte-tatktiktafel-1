@@ -8,6 +8,8 @@ module.exports = class TestRoom extends colyseus.Room {
 
   onCreate(options) {
     console.log("TestRoom.onCreate():");
+    this.roomId = options.roomID;
+    console.log("roomId:", this.roomId);
     this.setState(new RoomState());
 
     this.state.activeMap = "Inferno"; // Hack, bitte noch eleganter lösen

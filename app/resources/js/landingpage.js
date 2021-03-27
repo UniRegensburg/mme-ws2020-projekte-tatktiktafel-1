@@ -1,7 +1,7 @@
 import Config from "/app/resources/js/Config.js";
 
 function initCreateButton() {
-    var createButton = document.getElementById("btnCreateRoom"),
+    let createButton = document.getElementById("btnCreateRoom"),
     submitButton = document.getElementById("btnEnterRoom");
 
     createButton.addEventListener("click",createRoom);
@@ -9,15 +9,17 @@ function initCreateButton() {
 }
 
 function createRoom() {
-    var roomCode = Math.floor(Math.random() * (Config.MAX_M - Config.MIN_M + 1)) + Config.MIN_M;
-    console.log(roomCode);
-    //roomURL = url + roomCode;
-    location.replace(`http://localhost:8000/app/${roomCode}`);
-    console.log("Room created!");
+    let roomCode = Math.floor(Math.random() * (Config.MAX_M - Config.MIN_M + 1)) + Config.MIN_M;
+    redirect(roomCode);
 }
 
 function enterRoom() {
-    console.log("Room entered!");
+    let roomCode = document.getElementById("roomCodeInput").value; 
+    redirect(roomCode);
+}
+
+function redirect(roomCode) {
+    location.replace(`http://localhost:8000/app/${roomCode}`);   
 }
 
 function init() {

@@ -1,0 +1,28 @@
+#chat-box {
+    text-align:left;
+    margin:0 auto;
+    margin-bottom:1vh;
+    padding:1vw;
+    background: white;
+    height:35vh;
+    width:17vw;
+    border:1px solid black;
+    overflow: auto;
+}
+
+#chat-message {
+    width: 17vw;
+    align-items: center;
+    padding-left:1vw;
+    padding-right:1vw;
+}
+
+#chat-message-text {
+    margin: 0.2vw auto;
+    width: 79%;
+}
+
+#chat-message-button {
+    margin: 0.2vw auto;
+    width: 14%
+}

@@ -16,6 +16,7 @@ var canvas = document.getElementById("canvas"),
 	},
 	mapArray = Object.entries(maps),
 	utilityIsSelected = false,
+	itemGetsDragged = false,
 	client, roomGlobal, activeMap,
 	draggablePositions = { //eslint-disable-line
 		t1: {
@@ -70,13 +71,17 @@ function setDrawPosition(event) {
 }
 
 function draw(e) {
-	/* Abfrage, ob linke Maustaste gedrückt ist. */
+	/* Early-Return, wenn die linke Maustaste nicht gedrückt ist. */
 	if (e.buttons !== 1) { //button 1 = linke maustaste, muss gedrückt sein
 		return;
 	}
-	/* Abfrage, ob eine utility aktiviert ist. */
+	/* Early-Return, wenn eine utility aktiviert ist. */
 	else if(utilityIsSelected === true){
-	return;
+		return;
+	}
+	/* Early-Return, wenn ein Item gedragged wird. */
+	else if(itemGetsDragged === true){
+		return;
 	}
 	ctx.beginPath(); // begin
 	/* Radieren */
@@ -91,9 +96,9 @@ function draw(e) {
 	ctx.lineCap = Config.DRAW_DEFAULT_LINE_CAP;
 	ctx.strokeStyle = document.getElementById("drop-down-color-select").value;
 	}
-	ctx.moveTo(pos.x, pos.y); // Startposition
+	ctx.moveTo(drawPos.x, drawPos.y); // Startposition
 	setDrawPosition(e); //Neue Position wird festgelegt
-	ctx.lineTo(pos.x, pos.y); // Zielposition
+	ctx.lineTo(drawPos.x, drawPos.y); // Zielposition
 	ctx.stroke(); // Ausführen
 }
 
@@ -277,6 +282,7 @@ function initDraggables() {
 
 		if (e.target !== e.currentTarget) {
 			active = true;
+			itemGetsDragged = true;
 
 			// this is the item we are interacting with
 			activeItem = e.target;
@@ -317,6 +323,7 @@ function initDraggables() {
 
       active = false;
       activeItem = null;
+      itemGetsDragged = false;
     }
 
     function drag(e) {
@@ -347,19 +354,17 @@ function initGrenades() {
 	canvas = document.getElementsByClassName("canvas")[0],
 	chosenGrenade = null;
 
-	hegrenade.onclick = function() {changeToHeGrenade();};
-	decoy.onclick = function() {changeToDecoy();};
-	flashbang.onclick = function() {changeToFlashbang();};
-	incendiary.onclick = function() {changeToIncendiary();};
-	smoke.onclick = function() {changeToSmoke();};
-
-	canvas.onclick = function() {placeGrenade();};
+	hegrenade.addEventListener("click",changeToHeGrenade);
+	decoy.addEventListener("click",changeToDecoy);
+	flashbang.addEventListener("click",changeToFlashbang);
+	incendiary.addEventListener("click",changeToIncendiary);
+	smoke.addEventListener("click",changeToSmoke);
+	canvas.addEventListener("click",placeGrenade);
 
 	function resetPickedGrenades() {
 		let grenades = document.getElementsByClassName("grenades"), i;
 		for (i = 0; i < grenades.length; i++) {
 			grenades[i].style.opacity = 1;
-			console.log(grenades[i]);
 		}
 	}	
 
@@ -404,7 +409,6 @@ function initGrenades() {
 			flashbang.style.opacity = 1;
 			utilityIsSelected = false;
 		}
-
 	}
 	function changeToIncendiary() {
 		if (chosenGrenade !== "incendiary") {
@@ -435,7 +439,7 @@ function initGrenades() {
 		}
 	}
 	
-	function placeGrenade() {
+	function placeGrenade(event) {
 		let xPos = event.clientX - canvas.offsetLeft,
 		yPos = event.clientY - canvas.offsetTop;
 
@@ -443,16 +447,12 @@ function initGrenades() {
 			drawGrenade();
 		} else if (chosenGrenade === "decoy") {
 			drawGrenade();
-			console.log("Decoy");
 		} else if (chosenGrenade === "flashbang") {
 			drawGrenade();
-			console.log("Flashbang");
 		} else if (chosenGrenade === "incendiary") {
 			drawGrenade();
-			console.log("Incendiary");
 		} else if (chosenGrenade === "smoke") {
 			drawGrenade();
-			console.log("Smoke");
 		}
 		roomGlobal.send("canvaschanged",{canvasURI: canvas.toDataURL()});
 

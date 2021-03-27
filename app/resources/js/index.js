@@ -10,17 +10,63 @@ var canvas = document.getElementById("canvas"),
 	ctx = canvas.getContext("2d"),
 	eraserCheckbox = document.getElementById("erase-checkbox"),
 
-	pos = {
+	drawPos = {
 		x: 0,
 		y: 0,
 	},
 	mapArray = Object.entries(maps),
 	utilityIsSelected = false,
-	client, roomGlobal, activeMap;
+	client, roomGlobal, activeMap,
+	draggablePositions = { //eslint-disable-line
+		t1: {
+			x: 0,
+			y: 0,
+		},
+		t2: {
+			x: 0,
+			y: 0,
+		},
+		t3: {
+			x: 0,
+			y: 0,
+		},
+		t4: {
+			x: 0,
+			y: 0,
+		},
+		t5: {
+			x: 0,
+			y: 0,
+		},
+		ct1: {
+			x: 0,
+			y: 0,
+		},
+		ct2: {
+			x: 0,
+			y: 0,
+		},
+		ct3: {
+			x: 0,
+			y: 0,
+		},
+		ct4: {
+			x: 0,
+			y: 0,
+		},
+		ct5: {
+			x: 0,
+			y: 0,
+		},
+		bomb: {
+			x: 0,
+			y: 0,
+		},
+	};
 
 function setDrawPosition(event) {
-	pos.x = event.clientX - canvas.offsetLeft;
-	pos.y = event.clientY - canvas.offsetTop;
+	drawPos.x = event.clientX - canvas.offsetLeft;
+	drawPos.y = event.clientY - canvas.offsetTop;
 }
 
 function draw(e) {
@@ -44,7 +90,6 @@ function draw(e) {
 	ctx.lineWidth = Config.DRAW_DEFAULT_LINE_WIDTH;
 	ctx.lineCap = Config.DRAW_DEFAULT_LINE_CAP;
 	ctx.strokeStyle = document.getElementById("drop-down-color-select").value;
-
 	}
 	ctx.moveTo(pos.x, pos.y); // Startposition
 	setDrawPosition(e); //Neue Position wird festgelegt
@@ -156,6 +201,19 @@ function initColyseusClient() {
 			};
 			// console.log(state.canvasURI);
 			img.src = state.canvasURI;
+			Object.keys(draggablePositions).forEach((key) => {
+				let stateX = state.draggables[key].x, 
+				stateY = state.draggables[key].y, 
+				localX = draggablePositions[key].x,
+				localY = draggablePositions[key].y;
+				// console.log(stateX,stateY,localX,localY);
+				if (stateX !== localX || stateY !== localY) {
+					document.getElementById(key).style.transform = `translate3d(${stateX}px, ${stateY}px, 0px)`;
+					draggablePositions[key].x = stateX;
+					draggablePositions[key].y = stateY;
+				}
+
+			});
 		});
 	}).catch(e => {
 		console.log("JOIN ERROR", e);
@@ -224,6 +282,10 @@ function initDraggables() {
 			activeItem = e.target;
 
 			if (activeItem !== null) {
+
+				activeItem.xOffset = draggablePositions[activeItem.id].x;
+				activeItem.yOffset = draggablePositions[activeItem.id].y;
+
 				if (!activeItem.xOffset) {
 					activeItem.xOffset = 0;
 				}
@@ -239,10 +301,19 @@ function initDraggables() {
     }
 
     function dragEnd(e) { //eslint-disable-line no-unused-vars
+		let itemId, itemX, itemY, temp;
       if (activeItem !== null) {
         activeItem.initialX = activeItem.currentX;
         activeItem.initialY = activeItem.currentY;
       }
+      itemId = activeItem.id;
+      temp = activeItem.style.transform.replace(/translate3d|px|\(|\)/gi, "").split(",");
+      itemX = parseInt(temp[0].trim());
+      itemY = parseInt(temp[1].trim());
+
+      draggablePositions[itemId].x = itemX;
+      draggablePositions[itemId].y = itemY;
+      roomGlobal.send("draggablemoved", {id: itemId, x: itemX, y: itemY});
 
       active = false;
       activeItem = null;

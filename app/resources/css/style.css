@@ -19,6 +19,7 @@ body {
     align-items: center;
     font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
     background: black;
+    overflow: hidden;
 }
 
 h1 {

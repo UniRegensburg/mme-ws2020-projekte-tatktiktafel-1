@@ -30,7 +30,11 @@ module.exports = class TestRoom extends colyseus.Room {
     });
     this.onMessage("canvaschanged", (client,message) => {
       this.state.canvasURI = message.canvasURI;
-      console.log("canvaschanged");
+    });
+    this.onMessage("draggablemoved", (client,message) => {
+      this.state.draggables[message.id].x = message.x;
+      this.state.draggables[message.id].y = message.y;
+      console.log(message);
     });
 
     this.onMessage("chat", (client,message) => {

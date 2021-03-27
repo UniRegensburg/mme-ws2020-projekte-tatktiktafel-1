@@ -10,27 +10,78 @@ var canvas = document.getElementById("canvas"),
 	ctx = canvas.getContext("2d"),
 	eraserCheckbox = document.getElementById("erase-checkbox"),
 
-	pos = {
+	drawPos = {
 		x: 0,
 		y: 0,
 	},
 	mapArray = Object.entries(maps),
 	utilityIsSelected = false,
-	client, roomGlobal, activeMap;
+	itemGetsDragged = false,
+	client, roomGlobal, activeMap,
+	draggablePositions = { //eslint-disable-line
+		t1: {
+			x: 0,
+			y: 0,
+		},
+		t2: {
+			x: 0,
+			y: 0,
+		},
+		t3: {
+			x: 0,
+			y: 0,
+		},
+		t4: {
+			x: 0,
+			y: 0,
+		},
+		t5: {
+			x: 0,
+			y: 0,
+		},
+		ct1: {
+			x: 0,
+			y: 0,
+		},
+		ct2: {
+			x: 0,
+			y: 0,
+		},
+		ct3: {
+			x: 0,
+			y: 0,
+		},
+		ct4: {
+			x: 0,
+			y: 0,
+		},
+		ct5: {
+			x: 0,
+			y: 0,
+		},
+		bomb: {
+			x: 0,
+			y: 0,
+		},
+	};
 
 function setDrawPosition(event) {
-	pos.x = event.clientX - canvas.offsetLeft;
-	pos.y = event.clientY - canvas.offsetTop;
+	drawPos.x = event.clientX - canvas.offsetLeft;
+	drawPos.y = event.clientY - canvas.offsetTop;
 }
 
 function draw(e) {
-	/* Abfrage, ob linke Maustaste gedrückt ist. */
+	/* Early-Return, wenn die linke Maustaste nicht gedrückt ist. */
 	if (e.buttons !== 1) { //button 1 = linke maustaste, muss gedrückt sein
 		return;
 	}
-	/* Abfrage, ob eine utility aktiviert ist. */
+	/* Early-Return, wenn eine utility aktiviert ist. */
 	else if(utilityIsSelected === true){
-	return;
+		return;
+	}
+	/* Early-Return, wenn ein Item gedragged wird. */
+	else if(itemGetsDragged === true){
+		return;
 	}
 	ctx.beginPath(); // begin
 	/* Radieren */
@@ -45,9 +96,9 @@ function draw(e) {
 	ctx.lineCap = Config.DRAW_DEFAULT_LINE_CAP;
 	ctx.strokeStyle = document.getElementById("drop-down-color-select").value;
 	}
-	ctx.moveTo(pos.x, pos.y); // Startposition
+	ctx.moveTo(drawPos.x, drawPos.y); // Startposition
 	setDrawPosition(e); //Neue Position wird festgelegt
-	ctx.lineTo(pos.x, pos.y); // Zielposition
+	ctx.lineTo(drawPos.x, drawPos.y); // Zielposition
 	ctx.stroke(); // Ausführen
 }
 
@@ -177,6 +228,19 @@ function initColyseusClient() {
 			};
 			// console.log(state.canvasURI);
 			img.src = state.canvasURI;
+			Object.keys(draggablePositions).forEach((key) => {
+				let stateX = state.draggables[key].x, 
+				stateY = state.draggables[key].y, 
+				localX = draggablePositions[key].x,
+				localY = draggablePositions[key].y;
+				// console.log(stateX,stateY,localX,localY);
+				if (stateX !== localX || stateY !== localY) {
+					document.getElementById(key).style.transform = `translate3d(${stateX}px, ${stateY}px, 0px)`;
+					draggablePositions[key].x = stateX;
+					draggablePositions[key].y = stateY;
+				}
+
+			});
 		});
 	}
 }
@@ -238,11 +302,16 @@ function initDraggables() {
 
 		if (e.target !== e.currentTarget) {
 			active = true;
+			itemGetsDragged = true;
 
 			// this is the item we are interacting with
 			activeItem = e.target;
 
 			if (activeItem !== null) {
+
+				activeItem.xOffset = draggablePositions[activeItem.id].x;
+				activeItem.yOffset = draggablePositions[activeItem.id].y;
+
 				if (!activeItem.xOffset) {
 					activeItem.xOffset = 0;
 				}
@@ -258,13 +327,23 @@ function initDraggables() {
     }
 
     function dragEnd(e) { //eslint-disable-line no-unused-vars
+		let itemId, itemX, itemY, temp;
       if (activeItem !== null) {
         activeItem.initialX = activeItem.currentX;
         activeItem.initialY = activeItem.currentY;
       }
+      itemId = activeItem.id;
+      temp = activeItem.style.transform.replace(/translate3d|px|\(|\)/gi, "").split(",");
+      itemX = parseInt(temp[0].trim());
+      itemY = parseInt(temp[1].trim());
+
+      draggablePositions[itemId].x = itemX;
+      draggablePositions[itemId].y = itemY;
+      roomGlobal.send("draggablemoved", {id: itemId, x: itemX, y: itemY});
 
       active = false;
       activeItem = null;
+      itemGetsDragged = false;
     }
 
     function drag(e) {
@@ -295,19 +374,17 @@ function initGrenades() {
 	canvas = document.getElementsByClassName("canvas")[0],
 	chosenGrenade = null;
 
-	hegrenade.onclick = function() {changeToHeGrenade();};
-	decoy.onclick = function() {changeToDecoy();};
-	flashbang.onclick = function() {changeToFlashbang();};
-	incendiary.onclick = function() {changeToIncendiary();};
-	smoke.onclick = function() {changeToSmoke();};
-
-	canvas.onclick = function() {placeGrenade();};
+	hegrenade.addEventListener("click",changeToHeGrenade);
+	decoy.addEventListener("click",changeToDecoy);
+	flashbang.addEventListener("click",changeToFlashbang);
+	incendiary.addEventListener("click",changeToIncendiary);
+	smoke.addEventListener("click",changeToSmoke);
+	canvas.addEventListener("click",placeGrenade);
 
 	function resetPickedGrenades() {
 		let grenades = document.getElementsByClassName("grenades"), i;
 		for (i = 0; i < grenades.length; i++) {
 			grenades[i].style.opacity = 1;
-			console.log(grenades[i]);
 		}
 	}	
 
@@ -352,7 +429,6 @@ function initGrenades() {
 			flashbang.style.opacity = 1;
 			utilityIsSelected = false;
 		}
-
 	}
 	function changeToIncendiary() {
 		if (chosenGrenade !== "incendiary") {
@@ -383,7 +459,7 @@ function initGrenades() {
 		}
 	}
 	
-	function placeGrenade() {
+	function placeGrenade(event) {
 		let xPos = event.clientX - canvas.offsetLeft,
 		yPos = event.clientY - canvas.offsetTop;
 
@@ -391,16 +467,12 @@ function initGrenades() {
 			drawGrenade();
 		} else if (chosenGrenade === "decoy") {
 			drawGrenade();
-			console.log("Decoy");
 		} else if (chosenGrenade === "flashbang") {
 			drawGrenade();
-			console.log("Flashbang");
 		} else if (chosenGrenade === "incendiary") {
 			drawGrenade();
-			console.log("Incendiary");
 		} else if (chosenGrenade === "smoke") {
 			drawGrenade();
-			console.log("Smoke");
 		}
 		roomGlobal.send("canvaschanged",{canvasURI: canvas.toDataURL()});
 

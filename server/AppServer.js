@@ -24,8 +24,8 @@ class AppServer {
   constructor(appDir) {
     this.app = express();
     
-    this.appDir = path.join(__dirname, "../", appDir); 
-    this.app.use("/app", express.static(this.appDir));
+    this.appDir = path.join(__dirname, "../", appDir);
+    this.app.use("/app", express.static(this.appDir, {index: "landingpage.html"}));
 
     this.libPath = path.join(__dirname, "../", "libs");
     this.app.use("/libs", express.static(this.libPath));

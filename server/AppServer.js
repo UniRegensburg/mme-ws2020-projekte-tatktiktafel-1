@@ -38,7 +38,7 @@ class AppServer {
    */
   start(port) {
     this.server = this.app.listen(port, function() {
-      console.log(
+      console.log( //eslint-disable-line no-console
         `AppServer started. Client available at http://localhost:${port}/app`
       );
     });

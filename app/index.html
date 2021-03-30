@@ -11,22 +11,29 @@
 
 <body>
     <div class="left-container">
+        <div class="outerContainer">
+            <div class="item-container">
         <div class="menu-div" style="position: relative">
-            <select id="drop-down-map-select"></select>
-            <button id="clear-canvas-button">CLEAR</button>
-            <button id="reset-draggables-button">RESET</button>
-            <input type="checkbox" name="Erase" id="erase-checkbox">
-            <select id="drop-down-color-select"> 
-              <option value="#FF0000">red</option>
-              <option value="#68a3e5">blue</option>
-              <option value="#109856">green</option>
-              <option value="#e6f13d">yellow</option>
-              <option value="#eda338">orange</option>
-              <option value="#803ca1">purple</option>
+            <select id="drop-down-map-select" class="menu-item"></select>
+            <select id="drop-down-color-select" class="menu-item"> 
+                <option value="#FF0000" style="color: #FF0000">red</option>
+                <option value="#eda338" style="color: #eda338">orange</option>
+                <option value="#e6f13d" style="color: #e6f13d">yellow</option>
+                <option value="#109856" style="color: #109856">green</option>
+                <option value="#68a3e5" style="color: #68a3e5">blue</option>
+                <option value="#803ca1" style="color: #803ca1">purple</option>
             </select>
-            <button id="export-button">EXPORT</button>
-            <p style="color:white;">With rightclick you can place markers!</p>
+            <div class="menu-item">
+                <div class="eraser" style="float: left">Eraser</div>
+                <input type="checkbox" name="Erase" id="erase-checkbox" class="eraser">
+            </div>
+            <button id="clear-canvas-button" class="menu-item">CLEAR CANVAS</button>
+            <button id="reset-draggables-button" class="menu-item">RESET DRAGGABLES</button>
+            <button id="export-button" class="menu-item">EXPORT</button>
+            <p class="menu-hint">With right-click you can place markers!</p>
         </div>
+        </div>
+    </div>
         <div class="outerContainer">
             <div id="containerGrenades" class="item-container">
                 <img src="/app/resources/image/grenades/HE-Grenade.png" alt="HE-Grenade" id="hegrenade" class="grenades">
@@ -57,7 +64,7 @@
                 <img src="/app/resources/image/marker/Terrorist.png" alt="Terrorist" id="t5" class="draggable">
             </div>
             <div id="containerBomb" class="item-container">
-                <img src="/app/resources/image/marker/Bomb.jpg" alt="Bomb" id="bomb" class="draggable">
+                <img src="/app/resources/image/marker/Bomb.png" alt="Bomb" id="bomb" class="draggable">
             </div>
         </div>
         <div class="outerContainer">

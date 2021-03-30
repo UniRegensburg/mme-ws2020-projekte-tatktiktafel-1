@@ -16,3 +16,33 @@
 #clear-canvas-button{
     position: relative;
 }
+
+.menu-item{
+    display:block;
+    margin-top: 1vh;
+    padding: 0.5vh;
+    font-size: 2vh;
+    color: #0c0f12;
+    background-color: #5d79ae;
+    border: none;
+}
+
+.menu-hint{
+    display: block;
+    margin-top: 1vh;
+    padding: 0.5vh;
+    font-size: 1vh;
+    background-color: #0c0f12;
+    color: #5d79ae;
+    border: none;
+}
+
+.eraser{
+    display: inline;
+    font-weight: normal;
+    
+}
+
+#erase-checkbox{
+    box-shadow: 0 0 0.6vh 0.3vh #0c0f12;
+}

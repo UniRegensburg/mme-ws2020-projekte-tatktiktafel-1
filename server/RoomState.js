@@ -1,21 +1,7 @@
 /* eslint-env node */
 
-/**
- * Bildet den Status eines Raumes ab. Folgende Eigenschaften:
- * playbooks (nicht implementiert): Array von "playbook"s.
- * activePlaybook (nicht implementiert): "number". Index des aktiven Playbooks. Sollte zu 0 defaulten
- *    playbook (nicht implementiert): Array von "play"s. Repräsentiert einen Playbook-Tab
- *        activeMap: Eigenschaft von playbook. Repräsentiert aktuell ausgewählte Map.
- *    activePlay (nicht implementiert): "number". Index des aktiven Plays. Sollte zu 0 defaulten.
- *        play: Enthält die folgenden Eigenschaften:
- *            canvasURI: "string". URI des zu synchronisierenden Canvas des plays.
- *            t1-5, ct1-5, bomb: Draggable. Repräsentiert Position der Draggables. Möglicherweise in einem Objekt zusammenfassen
- *            Draggable: Nutzerdefinieres Schema, enthält x und y Koordinaten der Draggables.
- */
-
 const schema = require("@colyseus/schema"),
   Schema = schema.Schema;
-  // ArraySchema = schema.ArraySchema;
 
 class Draggable extends Schema {
 

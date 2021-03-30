@@ -5,9 +5,8 @@
     position: relative;
     padding: 0.4vh;
     margin: 0.2vh;
-    width: 5vh;
-    height: 5vh;
-    box-shadow: inset 0 0 1.5vh 0.1vh rgba(250,250,250,0.1);
+    width: 3vh;
+    height: 3vh;
     z-index: 3;
 }
 

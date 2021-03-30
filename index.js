@@ -4,30 +4,30 @@ var server;
 
 const AppServer = require("./server/AppServer.js");
 
-const colyseus = require("colyseus");
-const http = require("http");
-const port = process.env.port || 2567;
+const colyseus = require("colyseus"),
+  http = require("http"),
+  port = process.env.port || 2567; //eslint-disable-line no-magic-numbers
 
-const TestRoom = require("./server/TestRoom.js");
-// let testRoomClass = TestRoom.TestRoom;
+const TacticsRoom = require("./server/TacticsRoom.js");
 
 /**
  * Starts webserver to serve files from "/app" folder
  */
 function init() {
-    // Access command line parameters from start command (see package.json)
-    let appDirectory = process.argv[2], // folder with client files
-        appPort = process.argv[3]; // port to use for serving static files
-    server = new AppServer(appDirectory);
-    server.start(appPort);
+  // Access command line parameters from start command (see package.json)
+  let appDirectory = process.argv[2], // folder with client files
+    appPort = process.argv[3]; // port to use for serving static files
+  server = new AppServer(appDirectory);
+  server.app.get("/app/:roomId", function(req, res) {
+    res.sendFile("index.html", { root: server.appDir });
+  });
+  server.start(appPort);
 
-    const colyseusServer = new colyseus.Server({
-        server: http.createServer(server.app),
-    });
-    colyseusServer.listen(port);
-    console.log(`Colyseus Server Port: ${port}`);
-
-    colyseusServer.define("test",TestRoom);
+  const colyseusServer = new colyseus.Server({
+    server: http.createServer(server.app),
+  });
+  colyseusServer.listen(port);
+  colyseusServer.define("tacticsRoom", TacticsRoom);
 }
 
 init();

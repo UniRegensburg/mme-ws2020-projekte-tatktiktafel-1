@@ -23,7 +23,7 @@
 .outerContainer {
     text-align: center;
     position: relative;
-    background-color: palegoldenrod;
+    background-color: #ccba7c;
     border-radius: 10px;
     width: fit-content;
     height: fit-content;
@@ -38,7 +38,7 @@
     padding: 1.5vh;
     position: relative;
     width:fit-content;
-    background-color: #333;
+    background-color: #413a27;
     border-radius: 10px;
     display: inline-block;
 } 

@@ -272,6 +272,7 @@ function initChat() {
 		let paragraphElement = document.createElement("p");
 		paragraphElement.innerHTML = `<b>${message.client.sessionId}:</b> ${message.message.message}`;
 		chatHistory.appendChild(paragraphElement);
+		chatHistory.scrollTop = chatHistory.scrollHeight;
 	});
 	function onMessageEntered() {
 		roomGlobal.send("chat", { message: chatUserInput.value});

@@ -155,15 +155,22 @@ function initDropDown() {
 	dropDownMenuColorSelect.addEventListener("change", onColorDropDownChange);
 }
 
-function initClearCanvasButton(){
-	let clearCanvasButton = document.getElementById("clear-canvas-button");
+function initClearCanvasAndResetDraggablesButton(){
+	let clearCanvasButton = document.getElementById("clear-canvas-button"),
+	resetDraggablesButton = document.getElementById("reset-draggables-button");
+
 	clearCanvasButton.addEventListener("click",clearCanvas,false);
+	resetDraggablesButton.addEventListener("click",resetDraggables);
 }
 
 function clearCanvas(){
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	roomGlobal.send("canvaschanged", {canvasURI: canvas.toDataURL()});
 	console.log("clearCanvas");
+}
+
+function resetDraggables() {
+	roomGlobal.send("draggablesreset");
 }
 
 function initCanvas() {
@@ -502,7 +509,7 @@ function init() {
 	initDropDown();
 	initDraggables();
 	initGrenades();
-	initClearCanvasButton();
+	initClearCanvasAndResetDraggablesButton();
 	awaitClientInit();
 
 	// window.addEventListener("scroll",() => {window.scrollTo(0,0);});

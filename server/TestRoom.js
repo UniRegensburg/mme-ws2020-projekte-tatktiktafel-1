@@ -36,6 +36,12 @@ module.exports = class TestRoom extends colyseus.Room {
       this.state.draggables[message.id].y = message.y;
       console.log(message);
     });
+    this.onMessage("draggablesreset", (client, message) => {
+      for (const key of Object.keys(this.state.draggables)) {
+        this.state.draggables[key].x = 0;
+        this.state.draggables[key].y = 0;
+      }
+    });
 
     this.onMessage("chat", (client,message) => {
       this.broadcast("chat", {client: client, message: message});

@@ -147,7 +147,6 @@ a {
 }
 .c-form__toggle::before {
   font-size: 1.75em;
-  content: attr(data-title);
 }
 
 .c-form__input,
@@ -184,9 +183,6 @@ a {
 .c-form__input:required:valid + .c-form__buttonLabel {
   color: #ffffff;
 }
-.c-form__input:required:valid + .c-form__buttonLabel::before {
-  pointer-events: initial;
-}
 
 .c-form__buttonLabel {
   color: #ffaea9;
@@ -208,4 +204,5 @@ a {
   height: 100%;
   width: 5em;
   background-color: rgb(146, 148, 248);
+  cursor: pointer;
 }

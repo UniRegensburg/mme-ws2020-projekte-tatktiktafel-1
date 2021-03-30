@@ -13,7 +13,8 @@ function createRoom() {
     redirect(roomCode);
 }
 
-function enterRoom() {
+function enterRoom(e) {
+    e.preventDefault();
     let roomCode = document.getElementById("roomCodeInput").value; 
     redirect(roomCode);
 }

@@ -155,15 +155,22 @@ function initDropDown() {
 	dropDownMenuColorSelect.addEventListener("change", onColorDropDownChange);
 }
 
-function initClearCanvasButton(){
-	let clearCanvasButton = document.getElementById("clear-canvas-button");
+function initClearCanvasAndResetDraggablesButton(){
+	let clearCanvasButton = document.getElementById("clear-canvas-button"),
+	resetDraggablesButton = document.getElementById("reset-draggables-button");
+
 	clearCanvasButton.addEventListener("click",clearCanvas,false);
+	resetDraggablesButton.addEventListener("click",resetDraggables);
 }
 
 function clearCanvas(){
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	roomGlobal.send("canvaschanged", {canvasURI: canvas.toDataURL()});
 	console.log("clearCanvas");
+}
+
+function resetDraggables() {
+	roomGlobal.send("draggablesreset");
 }
 
 function initCanvas() {
@@ -175,22 +182,56 @@ function initCanvas() {
 	canvas.style.width = canvasSize;
 	canvas.style.height = canvasSize;
 
+	canvas.addEventListener("contextmenu", createPing);
 	canvas.addEventListener("mousemove", draw, false);
 	canvas.addEventListener("mousedown", setDrawPosition, false);
 	canvas.addEventListener("mouseenter", setDrawPosition, false);
 	canvas.addEventListener("mouseup",function() {
-		// ctx.globalCompositeOperation = "source-over";
+		ctx.globalCompositeOperation = "source-over";
 		roomGlobal.send("test", {timestamp: Date.now()});
 		roomGlobal.send("canvaschanged", {canvasURI: canvas.toDataURL()});
 	}, false);
 }
 
+function createPing(e){
+	e.preventDefault();
+	ctx.strokeStyle = document.getElementById("drop-down-color-select").value;
+	ctx.lineWidth = Config.DRAW_DEFAULT_LINE_WIDTH;
+	ctx.beginPath();
+	ctx.arc(e.clientX - canvas.offsetLeft,e.clientY-canvas.offsetTop, Config.DRAW_CIRCLE_RADIUS, 0, Config.ARC_END_ANGLE);
+	ctx.stroke();
+	roomGlobal.send("test", {timestamp: Date.now()});
+	roomGlobal.send("canvaschanged", {canvasURI: canvas.toDataURL()});
+}
+
 function initColyseusClient() {
 	client = new Colyseus.Client("ws://localhost:2567"); // localhost muss durch entsprechende Server-IP ersetzt werden.
+	let roomID = window.location.pathname.split("/").pop(), matchingRoomFound = false;
+	client.getAvailableRooms("test").then(rooms => {
+		rooms.forEach((room) => {
+			if (roomID === room.roomId) {
+				matchingRoomFound = true;
+				client.joinById(roomID).then(room => {
+					console.log(room.sessionId, "joined", room.roomId);
+					roomGlobal = room;
+					initRoomStateListener();
+				}).catch(e => {
+					console.log("JOIN ERROR", e);
+				});
+			}
+		});
+		if (!matchingRoomFound) {
+			client.create("test", {roomID: roomID}).then(room => {
+				console.log(room.sessionId, "created", room.id);
+				roomGlobal = room;
+				initRoomStateListener();
+			}).catch(e => {
+				console.log("JOIN ERROR", e);
+			});
+		}		
+	});
 
-	client.joinOrCreate("test").then(room => {
-		console.log(room.sessionId, "joined", room.name);
-		roomGlobal = room;
+	function initRoomStateListener() {
 		roomGlobal.onStateChange((state) => {
 			console.log(new Date(state.lastChanged).toTimeString());
 			console.log("testEventSinceServerStart: " + state.testEventSinceServerStart);
@@ -220,9 +261,7 @@ function initColyseusClient() {
 
 			});
 		});
-	}).catch(e => {
-		console.log("JOIN ERROR", e);
-	});
+	}
 }
 
 function initChat() {
@@ -513,14 +552,13 @@ function download(url) {
 }
 
 function init() {
-	ctx.strokeStyle = Config.DRAW_DEFAULT_COLOR; //default color geschickter setzen
 	initColyseusClient();
 	initCanvas();
 	initDropDown();
 	initDraggables();
 	initGrenades();
-	initClearCanvasButton();
 	initExportButton();
+	initClearCanvasAndResetDraggablesButton();
 	awaitClientInit();
 
 	// window.addEventListener("scroll",() => {window.scrollTo(0,0);});

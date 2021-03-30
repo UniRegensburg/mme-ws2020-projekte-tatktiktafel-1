@@ -8,6 +8,8 @@ module.exports = class TestRoom extends colyseus.Room {
 
   onCreate(options) {
     console.log("TestRoom.onCreate():");
+    this.roomId = options.roomID;
+    console.log("roomId:", this.roomId);
     this.setState(new RoomState());
 
     this.state.activeMap = "Inferno"; // Hack, bitte noch eleganter lösen
@@ -33,6 +35,12 @@ module.exports = class TestRoom extends colyseus.Room {
       this.state.draggables[message.id].x = message.x;
       this.state.draggables[message.id].y = message.y;
       console.log(message);
+    });
+    this.onMessage("draggablesreset", (client, message) => {
+      for (const key of Object.keys(this.state.draggables)) {
+        this.state.draggables[key].x = 0;
+        this.state.draggables[key].y = 0;
+      }
     });
 
     this.onMessage("chat", (client,message) => {

@@ -503,12 +503,61 @@ function initGrenades() {
 	}
 }
 
+function initExportButton(){
+	let exportButton = document.getElementById("export-button");
+	exportButton.addEventListener("click",exportToPNG,false);
+}
+
+function exportToPNG(){
+	let canvasSize = document.documentElement.clientHeight,
+	hiddenCanvas = document.getElementById("hiddenCanvas"),
+	backgroundImg = new Image(),
+	exportctx, mapPath, exportImg, mapPathUrl;
+	
+	hiddenCanvas.width = canvasSize;
+	hiddenCanvas.height = canvasSize;
+	hiddenCanvas.style.width = canvasSize;
+	hiddenCanvas.style.height = canvasSize;
+	exportctx = hiddenCanvas.getContext('2d');
+	
+	exportctx.drawImage(canvas, 0, 0);
+	
+	mapArray.forEach(function(map) {
+		if (map[1].name === document.getElementById("drop-down-map-select").value) {
+			mapPath = map[1].imagePath;
+		}
+	});
+	mapPathUrl = "resources/image/maps/" + mapPath;
+	backgroundImg.src = mapPathUrl;
+	console.log("starting onload");
+	backgroundImg.onload = function() {
+		exportctx.globalCompositeOperation = "destination-over";
+		exportctx.drawImage(backgroundImg, 0, 0);
+		exportImg = hiddenCanvas.toDataURL("image/png");
+		console.log(exportImg);
+		download(exportImg);
+	};
+}
+
+function download(url) {
+	fetch(url).then(function(t) {
+		return t.blob().then((b)=>{
+			var a = document.createElement("a");
+			a.href = URL.createObjectURL(b);
+			a.setAttribute("download", "tacticsgo-export.png");
+			a.click();
+		}
+		);
+	});
+}
+
 function init() {
 	initColyseusClient();
 	initCanvas();
 	initDropDown();
 	initDraggables();
 	initGrenades();
+	initExportButton();
 	initClearCanvasAndResetDraggablesButton();
 	awaitClientInit();
 

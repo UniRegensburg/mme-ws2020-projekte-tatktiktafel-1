@@ -175,6 +175,7 @@ function initCanvas() {
 	canvas.style.width = canvasSize;
 	canvas.style.height = canvasSize;
 
+	canvas.addEventListener("contextmenu", createPing);
 	canvas.addEventListener("mousemove", draw, false);
 	canvas.addEventListener("mousedown", setDrawPosition, false);
 	canvas.addEventListener("mouseenter", setDrawPosition, false);
@@ -183,6 +184,17 @@ function initCanvas() {
 		roomGlobal.send("test", {timestamp: Date.now()});
 		roomGlobal.send("canvaschanged", {canvasURI: canvas.toDataURL()});
 	}, false);
+}
+
+function createPing(e){
+	e.preventDefault();
+	ctx.strokeStyle = document.getElementById("drop-down-color-select").value;
+	ctx.lineWidth = Config.DRAW_DEFAULT_LINE_WIDTH;
+	ctx.beginPath();
+	ctx.arc(e.clientX - canvas.offsetLeft,e.clientY-canvas.offsetTop, Config.DRAW_CIRCLE_RADIUS, 0, Config.ARC_END_ANGLE);
+	ctx.stroke();
+	roomGlobal.send("test", {timestamp: Date.now()});
+	roomGlobal.send("canvaschanged", {canvasURI: canvas.toDataURL()});
 }
 
 function initColyseusClient() {
@@ -485,7 +497,6 @@ function initGrenades() {
 }
 
 function init() {
-	ctx.strokeStyle = Config.DRAW_DEFAULT_COLOR; //default color geschickter setzen
 	initColyseusClient();
 	initCanvas();
 	initDropDown();

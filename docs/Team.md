@@ -1,11 +1,29 @@
 # Team
 
-<!--[Beschreiben Sie hier die einzelnen Teammitglieder mit Namen, E-Mail-Adresse, Github-Nutzer und Foto. Nennen Sie mindestens eine Komponenten der Anwendung, die in wesentlichen Teilen vom jeweiligen Teammitglied entwickelt wurde.]-->
+## Jonathan Sören Schmid
+<img src="assets/author_pictures/Jonathan_Schmid.jpg" height="300">
 
-Jonathan Sören Schmid - jonathan-soeren.schmid@stud.uni-regensburg.de - Github: jonyschmid
+- E-Mail: jonathan-soeren.schmid@stud.uni-regensburg.de
+- Github: jonyschmid
+- Entwickelte Komponenten: Exportfunktion, Canvas, Aufbau und CSS von index, Radiergummi und Clearbutton
 
-Christian Anh Duy Nguyen Duc - Christian-Anh-Duy.Nguyen-Duc@stud.uni-regensburg.de - Github: chris78cn
+## Christian Anh Duy Nguyen Duc
+<img src="assets/author_pictures/Christian_Anh_Duy_Nguyen_Duc.jpg" height="300">
 
-Johannes Hoffmann - johannes-maximilian.hoffmann@stud-uni-regensburg.de - Github: Velnar
+- E-Mail Christian-Anh-Duy.Nguyen-Duc@stud.uni-regensburg.de
+- Github: chris78cn
+- Entwickelte Komponenten: Marker, Zeichenfarbe ändern
 
-Tobias Lanzl - tobias.lanzl@stud.uni-regensburg.de - Github: lat26358
+## Johannes Hoffmann
+<img src="assets/author_pictures/Johannes_Hoffmann.jpeg" height="300">
+
+- Email: johannes-maximilian.hoffmann@stud-uni-regensburg.de
+- Github: Velnar
+- Entwickelte Komponenten: Server-Client-Sync, Karten-Auswahl
+
+## Tobias Lanzl
+<img src="assets/author_pictures/Tobias_Lanzl.jpg" height="300">
+
+- E-Mail: tobias.lanzl@stud.uni-regensburg.de
+- Github: lat26358
+- Entwickelte Komponenten: Draggables, Granaten, Landing-Page

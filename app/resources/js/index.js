@@ -1,9 +1,10 @@
 /* eslint-env browser */
 
 import Config from "/app/resources/js/Config.js";
-import maps from "/app/resources/image/maps/Maps.js";
+import maps from "/app/resources/js/Maps.js";
 import Colyseus from "/app/resources/js/ColyseusProvider.js";
 
+// global variables
 var canvas = document.getElementById("canvas"),
   background = document.getElementById("background"),
   ctx = canvas.getContext("2d"),
@@ -65,12 +66,15 @@ var canvas = document.getElementById("canvas"),
   };
 
 function initColyseusClient() {
+  // initialize the client and the connection between the room and the client
   client = new Colyseus.Client(
     Config.SERVER_IP_ADRESS);
   let roomID = window.location.pathname.split("/").pop(),
     matchingRoomFound = false;
+  // check if client with roomID already exists
   client.getAvailableRooms("tacticsRoom").then(rooms => {
     rooms.forEach((room) => {
+      // if matching id found, connect to room
       if (roomID === room.roomId) {
         matchingRoomFound = true;
         client.joinById(roomID).then(room => {
@@ -82,6 +86,7 @@ function initColyseusClient() {
         });
       }
     });
+    // if no matching id found, create new room
     if (!matchingRoomFound) {
       client.create("tacticsRoom", { roomID: roomID }).then(room => {
         roomGlobal = room;
@@ -94,7 +99,9 @@ function initColyseusClient() {
   });
 
   function initRoomStateListener() {
+    // initializes the update functions
     roomGlobal.onStateChange((state) => {
+      // changes map if state map is different
       if (state.activeMap !== activeMap) {
         changeMap(state.activeMap);
         document.getElementById("drop-down-map-select").value = state
@@ -106,7 +113,9 @@ function initColyseusClient() {
 
         ctx.drawImage(img, 0, 0);
       };
+      // updates canvas to state canvas
       img.src = state.canvasURI;
+      // updates draggable positions if any are different
       Object.keys(draggablePositions).forEach((key) => {
         let stateX = state.draggables[key].x,
           stateY = state.draggables[key].y,
@@ -118,15 +127,16 @@ function initColyseusClient() {
           draggablePositions[key].x = stateX;
           draggablePositions[key].y = stateY;
         }
-
       });
     });
   }
 
   function initChat() {
+    // initialize the chat with all its functions
     let chatHistory = document.getElementById("chat-box"),
       chatUserInput = document.getElementById("chat-message-text"),
       chatEnterButton = document.getElementById("chat-message-button");
+    // update chat box on server message
     roomGlobal.onMessage("chat", (message) => {
       let paragraphElement = document.createElement("p");
       paragraphElement.innerHTML =
@@ -136,6 +146,7 @@ function initColyseusClient() {
     });
 
     function onMessageEntered() {
+      // notify server
       roomGlobal.send("chat", { message: chatUserInput.value });
       chatUserInput.value = "";
     }
@@ -152,24 +163,28 @@ function initColyseusClient() {
 }
 
 function initCanvas() {
+  // initialize the canvas with all its functions
 
-  //set canvas size 
+  // set canvas size 
   var canvasSize = document.documentElement.clientHeight;
   canvas.width = canvasSize;
   canvas.height = canvasSize;
   canvas.style.width = canvasSize;
   canvas.style.height = canvasSize;
 
+  // add event listener
   canvas.addEventListener("contextmenu", createPing);
   canvas.addEventListener("mousemove", draw, false);
   canvas.addEventListener("mousedown", setDrawPosition, false);
   canvas.addEventListener("mouseenter", setDrawPosition, false);
   canvas.addEventListener("mouseup", function() {
     ctx.globalCompositeOperation = "source-over";
+    // notify server
     roomGlobal.send("canvaschanged", { canvasURI: canvas.toDataURL() });
   }, false);
 
   function createPing(e) {
+    // draws a circle on the position of the mouse
     e.preventDefault();
     ctx.strokeStyle = document.getElementById("drop-down-color-select").value;
     ctx.lineWidth = Config.DRAW_DEFAULT_LINE_WIDTH;
@@ -177,49 +192,51 @@ function initCanvas() {
     ctx.arc(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop, Config
       .DRAW_CIRCLE_RADIUS, 0, Config.ARC_END_ANGLE);
     ctx.stroke();
+    // notify server
     roomGlobal.send("canvaschanged", { canvasURI: canvas.toDataURL() });
   }
 
   function setDrawPosition(event) {
+    // calculates the relative position of the mouse in comparison to the canvas
     drawPos.x = event.clientX - canvas.offsetLeft;
     drawPos.y = event.clientY - canvas.offsetTop;
   }
 
   function draw(e) {
-    /* Early-Return, wenn die linke Maustaste nicht gedrückt ist. */
-    if (e.buttons !== 1) { //button 1 = linke maustaste, muss gedrückt sein
+    // early return, if the left mouse button is not pressed
+    if (e.buttons !== 1) { //button 1 = left mouse button
       return;
     }
-    /* Early-Return, wenn eine utility aktiviert ist. */
+    // early return, if an utility is selected
     else if (utilityIsSelected === true) {
       return;
     }
-    /* Early-Return, wenn ein Item gedragged wird. */
+    // early return, if an item gets dragged
     else if (itemGetsDragged === true) {
       return;
     }
-    ctx.beginPath(); // begin
-    /* Radieren */
+    ctx.beginPath(); // begin 
     if (eraserCheckbox.checked === true) {
+      // erase
       ctx.globalCompositeOperation = "destination-out";
       ctx.lineWidth = Config.DRAW_DEFAULT_ERASER_WIDTH;
     }
-    /* Zeichnen */
     else {
+      // draw
       ctx.globalCompositeOperation = "source-over";
       ctx.lineWidth = Config.DRAW_DEFAULT_LINE_WIDTH;
       ctx.lineCap = Config.DRAW_DEFAULT_LINE_CAP;
       ctx.strokeStyle = document.getElementById("drop-down-color-select").value;
     }
-    ctx.moveTo(drawPos.x, drawPos.y); // Startposition
-    setDrawPosition(e); //Neue Position wird festgelegt
-    ctx.lineTo(drawPos.x, drawPos.y); // Zielposition
-    ctx.stroke(); // Ausführen
+    ctx.moveTo(drawPos.x, drawPos.y); // start position
+    setDrawPosition(e); // new position
+    ctx.lineTo(drawPos.x, drawPos.y); // target position
+    ctx.stroke(); // execute
   }
 }
 
-// Setzt außerdem Default Map
 function initDropDown() {
+  // initializes the dropdownmenus and sets default values
   let dropDownMenuMapSelect = document.getElementById("drop-down-map-select"),
     dropDownMenuColorSelect = document.getElementById("drop-down-color-select");
   mapArray.forEach(function(map) {
@@ -229,19 +246,23 @@ function initDropDown() {
     dropDownMenuMapSelect.appendChild(option);
   });
 
+  // initializes the eventlistener for changed menu-value
   changeMap(dropDownMenuMapSelect.value);
   dropDownMenuMapSelect.addEventListener("change", onMapDropDownChange);
   dropDownMenuColorSelect.addEventListener("change", onColorDropDownChange);
 
+  // handles changed map event
   function onMapDropDownChange(event) {
     let selectedMapName = event.target.value;
     if (selectedMapName === activeMap) {
       return;
     }
     changeMap(selectedMapName);
+    // notify server
     roomGlobal.send("mapchange", { activeMap: selectedMapName });
   }
 
+  // handles changed color event
   function onColorDropDownChange(event) {
     let selectedColor = event.target.value;
     if (selectedColor === ctx.strokeStyle) {
@@ -251,6 +272,7 @@ function initDropDown() {
   }
 }
 
+// changes map of the view
 function changeMap(mapName) {
   activeMap = mapName;
   let mapPath, mapPathUrl;
@@ -263,7 +285,7 @@ function changeMap(mapName) {
   background.style.backgroundImage = mapPathUrl;
 }
 
-//src: https://forum.kirupa.com/t/create-a-draggable-element-in-javascript/638149/5
+// src: https://forum.kirupa.com/t/create-a-draggable-element-in-javascript/638149/5
 function initDraggables() {
   var containerT = document.getElementById("containerT"),
     containerCT = document.getElementById("containerCT"),
@@ -271,14 +293,17 @@ function initDraggables() {
     activeItem = null,
     active = false;
 
+  // add Eventlistener on Terrorist-Marker 
   containerT.addEventListener("mousedown", dragStart, false);
   containerT.addEventListener("mouseup", dragEnd, false);
   containerT.addEventListener("mousemove", drag, false);
 
+  // add Eventlistener on Counter-Terrorist-Marker 
   containerCT.addEventListener("mousedown", dragStart, false);
   containerCT.addEventListener("mouseup", dragEnd, false);
   containerCT.addEventListener("mousemove", drag, false);
 
+  // add Eventlistener on Bomb-Marker 
   containerBomb.addEventListener("mousedown", dragStart, false);
   containerBomb.addEventListener("mouseup", dragEnd, false);
   containerBomb.addEventListener("mousemove", drag, false);
@@ -352,6 +377,7 @@ function initDraggables() {
 }
 
 function initGrenades() {
+  // initializes grenade elements
   let hegrenade = document.getElementById("hegrenade"),
     decoy = document.getElementById("decoy"),
     flashbang = document.getElementById("flashbang"),
@@ -360,6 +386,7 @@ function initGrenades() {
     canvas = document.getElementsByClassName("canvas")[0],
     chosenGrenade = null;
 
+  // make grenade-icons clickable
   hegrenade.addEventListener("click", changeToHeGrenade);
   decoy.addEventListener("click", changeToDecoy);
   flashbang.addEventListener("click", changeToFlashbang);
@@ -367,6 +394,7 @@ function initGrenades() {
   smoke.addEventListener("click", changeToSmoke);
   canvas.addEventListener("click", placeGrenade);
 
+  // reset opacity of all grenades
   function resetPickedGrenades() {
     let grenades = document.getElementsByClassName("grenades"),
       i;
@@ -374,7 +402,8 @@ function initGrenades() {
       grenades[i].style.opacity = 1;
     }
   }
-
+  
+  // pick He-Grenade
   function changeToHeGrenade() {
     if (chosenGrenade !== "hegrenade") {
       resetPickedGrenades();
@@ -389,7 +418,8 @@ function initGrenades() {
       utilityIsSelected = false;
     }
   }
-
+  
+  // pick Decoy
   function changeToDecoy() {
     if (chosenGrenade !== "decoy") {
       resetPickedGrenades();
@@ -404,7 +434,8 @@ function initGrenades() {
       utilityIsSelected = false;
     }
   }
-
+  
+  // pick Flashbang
   function changeToFlashbang() {
     if (chosenGrenade !== "flashbang") {
       resetPickedGrenades();
@@ -419,7 +450,8 @@ function initGrenades() {
       utilityIsSelected = false;
     }
   }
-
+  
+  // pick Incendiary
   function changeToIncendiary() {
     if (chosenGrenade !== "incendiary") {
       resetPickedGrenades();
@@ -434,7 +466,8 @@ function initGrenades() {
       utilityIsSelected = false;
     }
   }
-
+  
+  // pick Smoke
   function changeToSmoke() {
     if (chosenGrenade !== "smoke") {
       resetPickedGrenades();
@@ -450,10 +483,12 @@ function initGrenades() {
     }
   }
 
+  // places (picked) grenade on the user's mouse-position
   function placeGrenade(event) {
     let xPos = event.clientX - canvas.offsetLeft,
       yPos = event.clientY - canvas.offsetTop;
 
+    // check which grenade is chosen
     if (chosenGrenade === "hegrenade") {
       drawGrenade();
     } else if (chosenGrenade === "decoy") {
@@ -465,8 +500,10 @@ function initGrenades() {
     } else if (chosenGrenade === "smoke") {
       drawGrenade();
     }
+    // notify server
     roomGlobal.send("canvaschanged", { canvasURI: canvas.toDataURL() });
 
+    // place chosen grenade
     function drawGrenade() {
       let c = document.getElementsByClassName("canvas")[0],
         ctx = c.getContext("2d"),
@@ -478,10 +515,13 @@ function initGrenades() {
 }
 
 function initExportButton() {
+  // initializes the export button with an event listeners
   let exportButton = document.getElementById("export-button");
   exportButton.addEventListener("click", exportToPNG, false);
 
+  // exports the canvas to png
   function exportToPNG() {
+    // creates two images based on the background and the canvas state; merges them into a hidden canvas and exports the context as png
     let canvasSize = document.documentElement.clientHeight,
       hiddenCanvas = document.getElementById("hiddenCanvas"),
       backgroundImg = new Image(),
@@ -510,6 +550,7 @@ function initExportButton() {
       download(exportImg);
     };
 
+    // downloads the png
     function download(url) {
       fetch(url).then(function(t) {
         return t.blob().then((b) => {
@@ -524,23 +565,27 @@ function initExportButton() {
 }
 
 function initClearCanvasAndResetDraggablesButton() {
+  // initializes the clear canvas and reset draggables buttons with their eventlisteners
   let clearCanvasButton = document.getElementById("clear-canvas-button"),
     resetDraggablesButton = document.getElementById("reset-draggables-button");
 
   clearCanvasButton.addEventListener("click", clearCanvas, false);
   resetDraggablesButton.addEventListener("click", resetDraggables);
 
+  // clears the canvas and sends event to server
   function clearCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     roomGlobal.send("canvaschanged", { canvasURI: canvas.toDataURL() });
   }
 
+  // resets draggables and sends event to server
   function resetDraggables() {
     roomGlobal.send("draggablesreset");
   }
 }
 
 function init() {
+  // calls all init functions
   initColyseusClient();
   initCanvas();
   initDropDown();

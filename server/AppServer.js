@@ -27,6 +27,7 @@ class AppServer {
     this.appDir = path.join(__dirname, "../", appDir);
     this.app.use("/app", express.static(this.appDir, {index: "landingpage.html"}));
 
+    // provides client libraries
     this.libPath = path.join(__dirname, "../", "libs");
     this.app.use("/libs", express.static(this.libPath));
   }

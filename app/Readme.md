@@ -1,45 +1,52 @@
 # Quellcode (Client)
 
-Speichern Sie hier Ihr den Client-Code Ihres Projekt ab. Dazu gehören auch HTML- und CSS-Dateien sowie weitere Medieninhalte. Ersetzten Sie diesen Text durch eine kurze Beschreibung der Struktur bzw. Architektur Ihres Codes.
-
 ## css
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+CSS-Code für die Landing Page und Hauptseite. Der Code für die Hauptseite wurde nach Komponenten aufgeteilt.
 
 ## image
+
+Enthält Bilder und Icons zur Darstellung im Client.
+
 ### grenades
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+Icons für Utilities.
 
 ### maps
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+Bilder der CS:GO-Karten, als Hintergrund für den Canvas, auf dem gezeichnet wird.
 
 ### marker
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+Icons für die Spieler- und Bomben-Marker.
 
 ## js
 ### ColyseusProvider.js
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+Stellt den Colyseus-Client bereit, damit dieser via `import`-Statement importiert werden kann, was sonst nicht direkt funktioniert (vgl. https://github.com/UniRegensburg/mme-ws2020-projekte-tatktiktafel-1/issues/4).
 
 ### Config.js
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+Stellt ein `Config`-Objekt mit Konstanten für den Client-Teil der Anwendung bereit.
 
 ### index.js
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+Quellcode für die Taktiktafel. Es wird zunächst eine Verbindung zum Colyseus-Server hergestellt (wenn ein Raum mit passender ID gefunden wird, dann wird zu diesem verbunden, sonst wird ein neuer Raum erstellt; ID wird aus URL entnommen). Auf diesen Raum werden auch Listener für Änderungen am Zustand des Raumes registriert und gleich automatisch der aktuelle Zustand des Raumes übertragen.
+
+Sämtliche Tools werden anschließend auch initialisiert: Canvas, Optionen, Utilities, Marker und Chat.
 
 ### landingpage.js
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+Quellcode für die Landing Page. Initialisiert Listener auf den entsprechenden Buttons für "Raum erstellen" und "Raum beitreten".
+
+## Maps.js
+
+Stellt ein `maps`-Objekt zur Verfügung, welches Name und Pfad für Bild der Map enthält.
 
 ## index.html
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+HTML-Quellcode für Taktiktafel.
 
 ## landingpage.html
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+HTML-Quellcode für Landing-Page.

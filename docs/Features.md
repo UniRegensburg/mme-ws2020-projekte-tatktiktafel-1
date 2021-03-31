@@ -2,11 +2,6 @@
 
 Die Applikation "tactiCS:GO" richtet sich an E-Sport CS:GO Spieler, die mit ihrem Team im Vorhinein sich verschiedene Taktiken für ihre Wettkämpfe ausdenken, ausklügeln und optimieren möchten. Hierfür können die Nutzer sich eine Karte der Active-Duty-Maps auswählen, um auf dieser mit unterschiedlichen Farben zu zeichnen, Nutzobjekte zu markieren und Spielerpositionen aufzuzeigen. Das alles wird mit allen Nutzern über den Server synchronisiert. Mit dem Reset-Button(s) kann die Karte zum Ursprungszustand zurückgesetzt werden.
 
-
-<!---
-[Notieren und beschreiben Sie hier alle wesentlichen Funktionen bzw. *Features* Ihrer Anwendung. Seien Sie möglichst ausführlich in der Dokumentation und beachten Sie für die Erläuterungen ("Beschreibung") die Perspektive Ihrer NutzerInnen. Schätzen Sie initial den wahrscheinlichen Aufwand - auch um diese Schätzung am Ende des Projekts mit dem tatsächlichen Aufwand vergleichen zu können. Priorisieren Sie die Features hinsichtlich des zentralen *Use Case* Ihrer Anwendung und notieren Sie, welche größeren Bereiche der Anwendung von diesen Funktionen betroffen sind]
---->
-
 | Feature | Beschreibung | Priorität | Geschätzter Aufwand | Betroffene Schichten |
 |---------|--------------|-----------|--------------------|---------------------|
 | **Auswählbare Map** | Die Nutzer können zwischen den Maps des Active-Duty-Map-Pools auswählen. | hoch | 1 Tag | View |
@@ -55,44 +50,3 @@ Bei der Umsetzung werden die Features in der Regel direkt Vollständig implement
 ## Beispielhafter Usecase
 
 Ein Spieler erzeugt über die Landingpage einen Raum und erhält einen Code/Link (wird angezeigt und/oder direkt in Zwischenablage kopiert), den er an seine Teammitglieder verteilen kann. Mitglieder eines Raumes können die dort zur Verfügung stehenden Tools nutzen, um auf einer ausgewählten CS:GO Karte Marker zu platzieren und sie zu annotieren, um ihre Taktik bildlich zu kommunizieren. Es können innerhalb eines Raumes mehrere Taktiken mit unterschiedlichen oder gleichen Karten erzeugt werden. Jede Taktik besteht aus einem oder mehreren Timestamps. Die Räume bleiben auch ohne dass jemand in diesem anwesend ist für einige Zeit (tbd) erhalten. Um ihre Taktiken über diese Zeit hinaus zu persistieren, können Nutzer diese als Bild rendern und herunterladen.
-
-<!-- Wie fängts an
-Wie läuft es ab
-Wie endet es
-
-Zeitliche Abläufe darstellen
-Mehrere Taktiken
-
-
-evtl. colyseus benutzen
-
-
-Abschluss durch Persistieren; Rückkehr zum Raum, exportieren als Bild?
-Zeitliche Ebene durch mehrere Tafeln in einem Raum? 
--->
-
-<!---
-[Beschreiben Sie kurz das geplante Vorgehen bei der Umsetzung der Features. Entwerfen Sie dazu ein oder mehrere *Vertical Slices* anhand derer Sie den zentralen *Use Case* der Anwendung implementieren werden. Geben Sie an, wann welche Funktionen (und in welchem Vollständigkeitsgrad) implementiert werden. Begründen Sie kurz die gewählte Reihenfolge. ]
---->
-
-<!---
-Sollte Karte interaktiv sein? Zoom etc. Scrolling / Verschieben
-In Feature Liste konkretisieren
-
-Bessere Begriffe: z.B. statt Timestamp Phase/Frame
-Begriff Playbooks
-
-Software Engineering:
-Eigenschaften von Usern, Räumen
-Userinterface
-- Map noch zentraler, App vielleicht als Fullscreen, randlos mit Icons über der Map
-Gesamtstruktur der Anwendung auf einem Whiteboard zusammenfassen
-https://en.wikipedia.org/wiki/Class-responsibility-collaboration_card
-
-Wie Anwendung strukturieren
-Wie funktioniert Colysseus
-Beide Seiten zusammenbringen
-Auf dieser Basis die Anwendung aufbauen
-
-Im Laufe der Woche machen und Herrn Bazo im Discord anpingen
---->

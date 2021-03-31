@@ -3,6 +3,7 @@
 const schema = require("@colyseus/schema"),
   Schema = schema.Schema;
 
+// define Draggable with features x and y
 class Draggable extends Schema {
 
 }
@@ -11,6 +12,7 @@ schema.defineTypes(Draggable, {
   y: "number",
 });
 
+// define Draggables as Object of one Draggable each representing position of a marker
 class Draggables extends Schema {
   constructor() {
     super();
@@ -42,16 +44,16 @@ schema.defineTypes(Draggables, {
   bomb: Draggable,
 });
 
+// define RoomState with object of Draggables and information regarding active map and canvas state
 class RoomState extends Schema {
   constructor() {
     super();
     this.draggables = new Draggables();
   }
 }
-
 schema.defineTypes(RoomState, {
   testEventSinceServerStart: "number",
-  lastChanged: "number", // erwartet: Rückgabewert von Date.now()
+  lastChanged: "number", // expected: return of Date.now()
   activeMap: "string",
   canvasURI: "string",
   draggables: Draggables,

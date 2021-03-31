@@ -9,7 +9,7 @@ const Config = {
     MIN_M: 10000,
     MAX_M: 99999,
 
-    SERVER_IP_ADRESS: "ws://localhost:2567", // funktioniert mit npm und Liveshare, muss beim Deployment angepasst werden
+    SERVER_IP_ADRESS: "ws://localhost:2567", // works with npm and vs code liveshare, needs to get changed to the appropriate ip adress for deployment
 };
 
 Object.freeze(Config);
